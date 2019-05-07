@@ -11,7 +11,7 @@ As part of co-organizing [satRday Chicago](https://chicago2019.satrdays.org/), w
 
 I don't pretend this is the only way to write a talk. I don't pretend its the best way. I also don't pretend I'm such an experienced speaker that I'm qualified to write a textbook on this topic. However, this is an approach I've found helpful and a structure that has helped me keep organized and stay productive through writer's block or malaise. Just my two cents, and I'd love to hear yours, too!
 
-A living version of this document is available on [GitHub](https://github.com/emilyriederer/talk-prep), where [Patrick Miller](https://twitter.com/patr1ck_mil) was kind enough to provide some edits. I welcome any additional thoughts and contributions!
+Thanks to [Patrick Miller](https://twitter.com/patr1ck_mil) for providing some typos and edits in the original version of this piece which was shared via GitHub.
 
 ## Preparing a Tech Talk
 
