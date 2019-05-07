@@ -19,12 +19,15 @@ When I solicited feedback and more ideas on Twitter, the topic seemed to strike 
 
 The following list is based on a combination of my own speaking experiences, additional feedback and ideas that were shared with me, and new lessons learned from satRday. Hopefully it will be of use to other organizers as a checklist of information worth sharing or to other speakers to inspire questions they should be asking. 
 
+As I certainly learned from satRday, conference organizing is *hard*. The point of this post is not to imply that organizers must successfully do all of these things! This was just a helpful list for me to have in mind to try to hit as many as possible.
+
 Advice is broken down by time-to-conference:
 
 - [Before the Conference](#before)
 - [Throughout the Conference Day](#dayof)
 - [During Speaking Slot](#slot)
 - [After the Conference](#after)
+
 
 ## TLDR
 
