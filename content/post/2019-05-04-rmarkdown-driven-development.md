@@ -75,9 +75,9 @@ Of course, in this step, do be careful of being too "prescient". If some of your
 
 Reorganization offers other clear benefits, one of which is that code with similar purposes ends up physically closer in your document. This may make it easier for you to spot similarities. As you notice similarities in different chunks of wrangling or reporting chunks, keep in mind [the rule of three](https://en.wikipedia.org/wiki/Rule_of_three_(computer_programming)). That is, similar code repeated multiple times should be turned into a function. 
 
-For example, I often encounter situations where I need to produce the same plots or tables for many different groups. While an analyst is in exploratory mode, they might reasonably copy-paste such code, edit some key parameters, and eagerly proceed to analyzing the results. Coverting this code to functions makes is significantly easier to test and maintain. It also has the benefit of converting Reporting code into Infrastructure code which can be moved to the top of the RMarkdown, with the previously described benefits. Generally, I define any local functions after my `library()` and `source()` commands. 
+For example, I often encounter situations where I need to produce the same plots or tables for many different groups. While an analyst is in exploratory mode, they might reasonably copy-paste such code, edit some key parameters, and eagerly proceed to analyzing the results. Converting this code to functions makes is significantly easier to test and maintain. It also has the benefit of converting Reporting code into Infrastructure code which can be moved to the top of the RMarkdown, with the previously described benefits. Generally, I define any local functions after my `library()` and `source()` commands. 
 
-For good advice on *how* to modularize your functions, including naming^[Which is all to say that the illustration is, as it sounds, for illustrative purposes only. Please, please, please do not ever actually name a function anything as undescriptive as `viz_fx()` or `viz_fx2()`!] and behavior, I recommend [Maëlle Salmon's blog post](https://masalmon.eu/2017/12/11/goodrpackages/) and [rOpenSci's package development guide](https://ropensci.github.io/dev_guide/building.html).
+For good advice on *how* to modularize your functions, including naming^[Which is all to say that the illustration is, as it sounds, for illustrative purposes only. Please, please, please do not ever actually name a function anything as uninformative as `viz_fx()` or `viz_fx2()`!] and behavior, I recommend [Maëlle Salmon's blog post](https://masalmon.eu/2017/12/11/goodrpackages/) and [rOpenSci's package development guide](https://ropensci.github.io/dev_guide/building.html).
 
 > **Bonus Points** Now that you have functions, it's a good time to think about testing them. You could add a few tests of your functions in a chunk with `include = FALSE` as described in the last section for data validation. One helpful package here is [`testthat`](https://testthat.r-lib.org/). Even if you don't include these in your RMarkdown, save any informal tests you run in a text file. They will be useful if you decide to turn your analysis all the way into a [package](#package)
 
@@ -85,11 +85,11 @@ For good advice on *how* to modularize your functions, including naming^[Which i
 
 ![](/img/rmarkdown-driven-development/proj-to-pack-2.PNG)
 
-At this point, your RMarkdown ideally has clear requirements (library, file, and data dependencies) and minimal duplicated code. Particularly if you find that you are `source()`ing in a large number of files, defining many local functions, or reading in many differet datasets, its worth considering whether to convert your single file RMarkdown into an R Project. 
+At this point, your RMarkdown ideally has clear requirements (library, file, and data dependencies) and minimal duplicated code. Particularly if you find that you are `source()`ing in a large number of files, defining many local functions, or reading in many different datasets, its worth considering whether to convert your single file RMarkdown into an R Project. 
 
-[R Projects](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) are a special type of folder on your computer which automatically regards itself as the working directory. This has important benefits for sharability because it enables you to use relative paths. 
+[R Projects](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) are a special type of folder on your computer which automatically regards itself as the working directory. This has important benefits for shareability because it enables you to use relative paths. 
 
-Additionally, by using a standardized file structure within your project^[One of the "Good Enough" practices recommended in [this excellent article](https://arxiv.org/abs/1609.00037) by [Data Carpentry](https://datacarpentry.org/)], you can help others easily navigate your repository. If an entire team or organization decides on a single file structure convention, collaborators can easily navigate each others folders and have a good intuition where to find a specific file in somewhat else's project. 
+Additionally, by using a standardized file structure within your project^[One of the "Good Enough" practices recommended in [this excellent article](https://arxiv.org/abs/1609.00037) by [Data Carpentry](https://datacarpentry.org/)], you can help others easily navigate your repository. If an entire team or organization decides on a single file structure convention, collaborators can easily navigate each others folders and have a good intuition where to find a specific file in someone else's project. 
 
 There are many recommendations online for folder structures, but when modularizing an RMarkdown, I tend to use the following:
 
@@ -98,7 +98,7 @@ There are many recommendations online for folder structures, but when modularizi
 - `data`: Raw data - this folder should be considered "read only"!
 - `output`: Intermediate data objects created in my analysis. Typically, I save these as RDS files (with `saveRDS` and `readRDS`)
 - `doc`: Any long form documentation or set-up instructions I wish to include
-- `ext`: Any miscellaneous external files that take partin my analysis
+- `ext`: Any miscellaneous external files that take part in my analysis
 
 > **Bonus Points** Now that you have a project, consider taking a more proactive stance on package management to ensure the future user has correct / compatible versions of any packages on which your project relies. As of writing this, RStudio's new package management solution [`renv`](https://rstudio.github.io/renv/) is still in development, but follow that project for more details!
 
@@ -111,11 +111,11 @@ One of the beautiful things about R packages is their shocking simplicity. Befor
 There is a clear parallel between the "project" folders described above and the folders typically found in an R package.^[In fact, one could use a package structure for their project to begin with. This idea is brought to life with the idea of creating an R [research compendium](https://github.com/ropensci/rrrpkg). I personally prefer to keep the naming conventions separate to distinguish between projects and packages, and to use the name that is most appropriate for the contents in each case. ]
 
 - Functions in the project's `src/` folder can move to a package's `R/` folder
-- RMarkdown documents in the `analysis/` folder are worked examples of how your code solves a real probelms - much like the contents of a `vignettes/` folder
+- RMarkdown documents in the `analysis/` folder are worked examples of how your code solves a real problems - much like the contents of a `vignettes/` folder
 - If you take the time to clean up those worked analyses, strip out any problem-specific context, and perhaps provide more user instructions, this could turn into an [RMarkdown template](https://bookdown.org/yihui/rmarkdown/document-templates.html) which you can ship via the `inst/` folder
 - Your `data/` (and possibly `output/`) folder(s) contain datasets that fuel your examples. This is the type of sample data that one often includes in a `data/` folder
 
-It's also instructive to notice the *differences* between projects and packages. Following the description above, the biggest notable gaps are the lack of unit tests (which would live in the `tests/` folder) and function documentation (which can be autogenereated from [roxygen2 comments](https://cran.r-project.org/web/packages/roxygen2/index.html) and live in `docs/`). These can easily be added when converting your project to a package. 
+It's also instructive to notice the *differences* between projects and packages. Following the description above, the biggest notable gaps are the lack of unit tests (which would live in the `tests/` folder) and function documentation (which can be autogenerated from [roxygen2 comments](https://cran.r-project.org/web/packages/roxygen2/index.html) and live in `docs/`). These can easily be added when converting your project to a package. 
 
 More importantly, I encourage *project* developers to consider whether they shouldn't be including this level of detail even if they never plan to make a package. Even if your functions are just for you, don't you want to trust them and remember how to use them when you revisit your project next quarter or year?
 

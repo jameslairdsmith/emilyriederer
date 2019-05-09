@@ -39,7 +39,7 @@ Below, I share a lot of specific details, but in the end it is all about communi
 
 **Communicate in detail**. Don't leave things uncertain or up to the imagination. Cater to the level of detail desired by the most inquisitive or nervous participant. Others won't mind skimming (and probably will anyway).
 
-**Communicate two ways**. Be sure speakers have the opporunity to tell *you* stuff as well, ask for what they need, or decline things they don't want (e.g. social media).
+**Communicate two ways**. Be sure speakers have the opportunity to tell *you* stuff as well, ask for what they need, or decline things they don't want (e.g. social media).
 
 **Communicate concisely**. Angela graciously edited my speaker emails and helped me remember that speakers have lives, jobs, and responsibilities beyond their generously donated time. Share information at the right time in the right increments. Don't overwhelm speakers with content or assume they've retained everything you've told them. Require an affirmation for anything truly critical.
 
@@ -51,19 +51,19 @@ Before the conference, make sure you have everything you need from speakers and 
 
 **Information Collection**
 
-- When speakers are confirming participation, ask that they share additional metadata to be used in introductions. Specifically, be sure to know how to prounounce their name, their preferred pronouns, and any biographical information they wish to have mentioned
+- When speakers are confirming participation, ask that they share additional metadata to be used in introductions. Specifically, be sure to know how to pronounce their name, their preferred pronouns, and any biographical information they wish to have mentioned
 - Make sure than infrastructure (e.g. bio/photo collection, publicity, feedback, etc.) allows for co-presenters if conference allows this
 - Collect consent to be included in photos / videos
 
 **Information to Share with Speakers**
 
-- Clarify topic and timeslot and whether stated session time includes questions
-- Set clear expectation of speakers staying within alloted time or being cut-off, for the sake of other speakers and attendees who need to stay on track
+- Clarify topic and time slot and whether stated session time includes questions
+- Set clear expectation of speakers staying within allotted time or being cut-off, for the sake of other speakers and attendees who need to stay on track
 - Confirm conference speakers as soon as possible to give them sufficient time to prepare their talk, book travel, and get permission for any sensitive material they might be covering
 - Establish and communicate a single speaker point-of-contact and provide both phone and email options to reach. This person should be the touch stone for any questions or concerns before or during the conference
 - Request that speakers upload their slides to internet, email to organizers, or bring on physical drive as a back-up in the case of computer problems
 - Offer the optional opportunity for speakers to practice their talk or show their slides to a conference planner or someone else before the conference
-- In case of any changes (like a speaker timeslot changing after being announced), be sure to notify affected speakers or, better yet, ask them if its alright
+- In case of any changes (like a speaker time slot changing after being announced), be sure to notify affected speakers or, better yet, ask them if its alright
 
 **Publicity**
 
@@ -72,7 +72,7 @@ Before the conference, make sure you have everything you need from speakers and 
 
 ## On the Day Of the Conference {#dayof}
 
-Throughout the conference, speakers should feel comfortable, have opportunities to destress, and get good visibility for their efforts and contributions.
+Throughout the conference, speakers should feel comfortable, have opportunities to relax, and get good visibility for their efforts and contributions.
 
 **At Check-In**
 
@@ -81,13 +81,13 @@ Throughout the conference, speakers should feel comfortable, have opportunities 
 
 **In Opening Remarks**
 
-- Foster a constructive environment by defining what does and does not consitute a question. (For example, rstudio::conf does a nice job of this, defining questions up front as a single sentence ending in a question mark.)
+- Foster a constructive environment by defining what does and does not constitute a question. (For example, rstudio::conf does a nice job of this, defining questions up front as a single sentence ending in a question mark.)
 - Be sure to recognize speakers for the tremendous time investment that they have made
 
 **Throughout the Day**
 
 - Provide a "speaker lounge" for speakers to step away from conference, practice presentation, or get "in the zone" as desired
-- Make it easy to identify speakers with a different color of lanyards or nametags versus attendees. This will help speakers network more effectively and be more available to interested audience members after their session
+- Make it easy to identify speakers with a different color of lanyards or name-tags versus attendees. This will help speakers network more effectively and be more available to interested audience members after their session
 
 ## During Speaking Slot {#slot}
 
