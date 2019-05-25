@@ -1,7 +1,7 @@
 ---
 title: 'Resource Round-Up: Reproducible Research Edition'
 author: Emily Riederer
-date: '2019-05-19'
+date: '2019-12-31'
 tags:
   - resources
   - workflow
