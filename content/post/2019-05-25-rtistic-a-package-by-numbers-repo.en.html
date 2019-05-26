@@ -80,7 +80,7 @@ test_pal_div &lt;- c(&quot;green&quot;, &quot;yellow&quot;, &quot;red&quot;)    
 <p>These palettes can then be used in a number of functions (thanks to the <a href="https://github.com/emilyriederer/Rtistic/blob/master/R/palette-infrastructure.R"><code>R/palette-infrastructure.R</code> file</a>):</p>
 <ul>
 <li><code>scale_(color/colour/fill)_discrete_rtistic(palette = &quot;test&quot;)</code>: Discrete palette with optional <code>extend</code> parameter to interpolate more values</li>
-<li><code>scale_(color/colour/fill)_opinionated_rtistic(palette = &quot;test&quot;)</code>: Discrete palette to map to subjectively coded “good”/“bad”/“neutral” column</li>
+<li><code>scale_(color/colour/fill)_opinionated_rtistic(palette = &quot;test&quot;)</code>: Discrete palette to map to subjectively coded “good”/“bad”/“neutral” column<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></li>
 <li><code>scale_(color/colour/fill)_continuous_rtistic(palette = &quot;test&quot;)</code>: Standard continous palette</li>
 <li><code>scale_(color/colour/fill)_diverging_rtistic(palette = &quot;test&quot;)</code>: Diverging continuous palette</li>
 </ul>
@@ -93,10 +93,10 @@ test_pal_div &lt;- c(&quot;green&quot;, &quot;yellow&quot;, &quot;red&quot;)    
 <h3>…but Valuable</h3>
 <p>Despite the low barriers to entry, my hope is that there is a lot to learn with <code>Rtistic</code>. For example, participants might get exposure to:</p>
 <ul>
-<li><strong>Package structure</strong>: By filling in the missing pieces of an existing package, teams will navigate through an R package file structure. Whether or not teams have package building aspirations, being able to read package source code is a useful skill.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> It’s also a chance to practice good documentation with commenting and vignette writing.<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a></li>
-<li><strong>Collaboration on GitHub</strong>: I’m convicted no one will ever understand git or GitHub by <em>reading</em>. The easiest way to learn forks, branches, and pull requests is to use them. <code>Rtistic</code> attempts to make this as easy as possible. Multiple teams should never need to edit the same file, so the likelihood of a big merge conflict problem is low.<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a></li>
+<li><strong>Package structure</strong>: By filling in the missing pieces of an existing package, teams will navigate through an R package file structure. Whether or not teams have package building aspirations, being able to read package source code is a useful skill.<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a> It’s also a chance to practice good documentation with commenting and vignette writing.<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a></li>
+<li><strong>Collaboration on GitHub</strong>: I’m convicted no one will ever understand git or GitHub by <em>reading</em>. The easiest way to learn forks, branches, and pull requests is to use them. <code>Rtistic</code> attempts to make this as easy as possible. Multiple teams should never need to edit the same file, so the likelihood of a big merge conflict problem is low.<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a></li>
 <li><strong>ggplot2 styling</strong>: <code>ggplot2</code> is intuitive; however, compared to most of the <code>tidyverse</code>, it is intuitive in the sense of having a rich philosophical basis - not in the sense of “barely needed to read the docs because I can infer it all”. Unfortunately, this difference can make it feel <em>unintuitive</em> to new users. Exposure to <code>ggplot2</code> theme options pays dividends in getting the most from the package.</li>
-<li><strong>HTML / CSS</strong>: R users more typically come from math and stats backgrounds (versus tech), knowledge of front-end web development can be limited. However, users of any of the <code>*down</code> packages<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a> can benefit a lot by having even a cursory understanding of these tools to take advantage of RMarkdown’s customization capabilities.</li>
+<li><strong>HTML / CSS</strong>: R users more typically come from math and stats backgrounds (versus tech), knowledge of front-end web development can be limited. However, users of any of the <code>*down</code> packages<a href="#fn6" class="footnoteRef" id="fnref6"><sup>6</sup></a> can benefit a lot by having even a cursory understanding of these tools to take advantage of RMarkdown’s customization capabilities.</li>
 </ul>
 <p>If this seems like too much at once, the modular nature of the project makes it easy to strip down. If GitHub is out of scope, participants can locally change a small number of files and share them with an organizer for compilation. If <code>ggplot2</code> and HTML/CSS are too much to tackle at once, either the plot or RMarkdown theme pieces can be ignored.</p>
 </div>
@@ -120,9 +120,10 @@ test_pal_div &lt;- c(&quot;green&quot;, &quot;yellow&quot;, &quot;red&quot;)    
 <hr />
 <ol>
 <li id="fn1"><p>As in the ever popular “draw an owl” <a href="https://knowyourmeme.com/memes/how-to-draw-an-owl">meme</a><a href="#fnref1">↩</a></p></li>
-<li id="fn2"><p>For example, I recently started using a package with very little documentation but an excellent test suite. Once I figured this out, I was able to use it a lot more efficiently by learning from the test examples.<a href="#fnref2">↩</a></p></li>
-<li id="fn3"><p>Another conviction of mine is that these skills should be used for most R projects – not just packages. R’s strong conventions and culture for documentation are one of its hallmarks.<a href="#fnref3">↩</a></p></li>
-<li id="fn4"><p>Obviously, merge conflicts are an important concept to understand, but as a day-one intro, “how this ideally works” is easier to grasp.<a href="#fnref4">↩</a></p></li>
-<li id="fn5"><p>Or Shiny, flexdashboard, etc.<a href="#fnref5">↩</a></p></li>
+<li id="fn2"><p>I will admit that the <code>opinonated</code> scale likely is not useful or relevant in many cases. However, since corporate color palettes are one place I can imagine <code>Rtistic</code> being useful, I decided to include it since having a predefined mapping of “good” and “bad” colors (e.g. for profits and losses). I also think it’s a nice discrete parallel to the more typical <code>diverging</code> scale for continuous-valued variables.<a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p>For example, I recently started using a package with very little documentation but an excellent test suite. Once I figured this out, I was able to use it a lot more efficiently by learning from the test examples.<a href="#fnref3">↩</a></p></li>
+<li id="fn4"><p>Another conviction of mine is that these skills should be used for most R projects – not just packages. R’s strong conventions and culture for documentation are one of its hallmarks.<a href="#fnref4">↩</a></p></li>
+<li id="fn5"><p>Obviously, merge conflicts are an important concept to understand, but as a day-one intro, “how this ideally works” is easier to grasp.<a href="#fnref5">↩</a></p></li>
+<li id="fn6"><p>Or Shiny, flexdashboard, etc.<a href="#fnref6">↩</a></p></li>
 </ol>
 </div>

@@ -88,7 +88,7 @@ test_pal_div <- c("green", "yellow", "red")       # reference points for divergi
 These palettes can then be used in a number of functions (thanks to the [`R/palette-infrastructure.R` file](https://github.com/emilyriederer/Rtistic/blob/master/R/palette-infrastructure.R)):
 
 - `scale_(color/colour/fill)_discrete_rtistic(palette = "test")`: Discrete palette with optional `extend` parameter to interpolate more values
-- `scale_(color/colour/fill)_opinionated_rtistic(palette = "test")`: Discrete palette to map to subjectively coded "good"/"bad"/"neutral" column
+- `scale_(color/colour/fill)_opinionated_rtistic(palette = "test")`: Discrete palette to map to subjectively coded "good"/"bad"/"neutral" column^[I will admit that the `opinonated` scale likely is not useful or relevant in many cases. However, since corporate color palettes are one place I can imagine `Rtistic` being useful, I decided to include it since having a predefined mapping of "good" and "bad" colors (e.g. for profits and losses). I also think it's a nice discrete parallel to the more typical `diverging` scale for continuous-valued variables.]
 - `scale_(color/colour/fill)_continuous_rtistic(palette = "test")`: Standard continous palette
 - `scale_(color/colour/fill)_diverging_rtistic(palette = "test")`: Diverging continuous palette
 
