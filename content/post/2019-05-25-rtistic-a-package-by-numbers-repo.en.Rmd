@@ -85,10 +85,20 @@ test_pal_cont <- c("green", "yellow")             # endpoints for a continous sc
 test_pal_div <- c("green", "yellow", "red")       # reference points for diverging scale
 ```
 
+<details>
+<summary> Full example file below the fold </summary>
+
+```{r echo = FALSE}
+text <- RCurl::getURL("https://raw.githubusercontent.com/emilyriederer/Rtistic/master/R/my-gg-palette.R")
+cat(text)
+```
+
+</details>
+
 These palettes can then be used in a number of functions (thanks to the [`R/palette-infrastructure.R` file](https://github.com/emilyriederer/Rtistic/blob/master/R/palette-infrastructure.R)):
 
 - `scale_(color/colour/fill)_discrete_rtistic(palette = "test")`: Discrete palette with optional `extend` parameter to interpolate more values
-- `scale_(color/colour/fill)_opinionated_rtistic(palette = "test")`: Discrete palette to map to subjectively coded "good"/"bad"/"neutral" column^[I will admit that the `opinonated` scale likely is not useful or relevant in many cases. However, since corporate color palettes are one place I can imagine `Rtistic` being useful, I decided to include it since having a predefined mapping of "good" and "bad" colors (e.g. for profits and losses). I also think it's a nice discrete parallel to the more typical `diverging` scale for continuous-valued variables.]
+- `scale_(color/colour/fill)_opinionated_rtistic(palette = "test")`: Discrete palette to map to subjectively coded "good"/"bad"/"neutral" column^[I will admit that the `opinionated` scale likely is not useful or relevant in many cases. However, since corporate color palettes are one place I can imagine `Rtistic` being useful, I decided to include it since having a predefined mapping of "good" and "bad" colors (e.g. for profits and losses). I also think it's a nice discrete parallel to the more typical `diverging` scale for continuous-valued variables.]
 - `scale_(color/colour/fill)_continuous_rtistic(palette = "test")`: Standard continous palette
 - `scale_(color/colour/fill)_diverging_rtistic(palette = "test")`: Diverging continuous palette
 
@@ -128,9 +138,17 @@ p_div  <-
 grid.arrange(p_disc, p_op, p_cont, p_div, ncol = 2)
 ```
 
-To "level up", participants can also use `roxygen2` syntax to add documentation about their theme and showcase it by editing the [`my-gg-theme-vignette.Rmd` template](https://github.com/emilyriederer/Rtistic/blob/master/scratchpad/gg-theme-demo.Rmd). Adding actual `ggplot2` and RMarkdown themes is slightly more advanced, but the core design of participants altering templates still holds.
+To "level up", participants can also use `roxygen2` syntax to add documentation about their theme and showcase it by editing the [`my-gg-theme-vignette.Rmd` template](https://github.com/emilyriederer/Rtistic/blob/master/scratchpad/gg-theme-demo.Rmd). 
+
+The `get_rtistic_palettes()` function scans the package's namespace for anything ending in `_pal` to help users learn about all the available options^[This allows discoverbility without having to maintain any centralized list of palettes since, for logistical reasons, `Rtistic` is designed to be completely modular.]:
+
+```{r}
+Rtistic::get_rtistic_palettes()
+```
 
 You can try all this out for yourself on [RStudio Cloud](https://rstudio.cloud/project/363105). Simply resave the `my-gg-palette.R` file, define new palette colors (named `{xxx}_{pal/pal_op/pal_cont/pal_div}`), rebuild the package, open the `vignettes/my-gg-theme-vignette.Rmd` file, change `palette = "test"` to `palette = "{xxx}"` throughout, and reknit!
+
+Adding actual `ggplot2` and RMarkdown themes is slightly more advanced, but the core design of participants altering templates still holds. Helper functions and instructions are also provided for some of the most esoteric tasks, like encoding a logo image as a URI to be included as a custom footer of a self-contained RMarkdown.
 
 ### ...but Valuable
 
@@ -206,8 +224,67 @@ ggplot(data = points,
        col = "Renamed Legend") 
 ```
 
+<details><summary> Code here </summary>
+
+```{r echo = TRUE, eval = FALSE}
+library(ggplot2)
+# sample data for plot ----
+points <- 
+  data.frame(
+    x = rep(1:10,3), 
+    y = rep(1:10,3), 
+    z = sort(rep(letters[1:2], 15)),
+    w = rep(letters[3:4], 15)
+    )
+# ggplot using many theme options ----
+ggplot(data = points, 
+       mapping = aes(x = x, y = y, col = factor(x))) + 
+  geom_point(size = 5) + 
+  facet_grid(w ~ z, switch = "y") +
+  theme(
+    
+    plot.background = element_rect(fill = "lightyellow"),
+    plot.title = element_text(size = 30, hjust = 0.25),
+    plot.subtitle = element_text(size = 20, hjust = 0.75, color = "mediumvioletred", family = "serif"),
+    plot.caption = element_text(size = 10, face = "italic", angle = 25),
+    
+    panel.background = element_rect(fill = 'lightblue', colour = 'darkred', size = 4),
+    panel.border = element_rect(fill = NA, color = "green", size = 2),
+    panel.grid.major.x = element_line(color = "purple", linetype = 2),
+    panel.grid.minor.x = element_line(color = "orange", linetype = 3),
+    panel.grid.minor.y = element_blank(),
+    
+    axis.title.x = element_text(face = "bold.italic", color = "blue"),
+    axis.title.y = element_text(family = "mono", face = "bold", size = 20, hjust = 0.25),
+    axis.text = element_text(face = "italic", size = 15),
+    axis.text.x.bottom = element_text(angle = 180), # note that axis.text options from above are inherited
+    
+    strip.background = element_rect(fill = "magenta"),
+    strip.text.y = element_text(color = "white"),
+    strip.placement = "outside",
+    
+    legend.background = element_rect(fill = "orangered4"), # generally will want to match w plot background
+    legend.key = element_rect(fill = "orange"),
+    legend.direction = "horizontal",
+    legend.position = "bottom",
+    legend.justification = "left",
+    legend.title = element_text(family = "serif", color = "white"),
+    legend.text = element_text(family = "mono", face = "italic", color = "limegreen")
+    
+  ) +
+  labs(title = "test title",
+       subtitle = "test subtitle",
+       x = "my x axis",
+       y = "my y axis",
+       caption = "this is a caption",
+       col = "Renamed Legend") 
+```
+
+</details>
+
 Again, try this out on [RStudio Cloud](https://rstudio.cloud/project/363105) by opening up the `scratchpad/gg-theme-demo.Rmd` and playing around.
 
 ### Take it for a Spin!
 
 Complete information and more tactical step-by-step instructions for both organizers and participants can be found on the [`Rtistic` GitHub repo](https://github.com/emilyriederer/Rtistic). Please let me know if you check it out. I welcome any and all feedback!
+

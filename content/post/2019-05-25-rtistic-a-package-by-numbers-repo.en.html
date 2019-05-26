@@ -77,6 +77,40 @@ subtitle: ''
 test_pal_op &lt;- c(&quot;green&quot;, &quot;grey50&quot;, &quot;red&quot;)        # discrete colors mapping to good/neutral/bad
 test_pal_cont &lt;- c(&quot;green&quot;, &quot;yellow&quot;)             # endpoints for a continous scale
 test_pal_div &lt;- c(&quot;green&quot;, &quot;yellow&quot;, &quot;red&quot;)       # reference points for diverging scale</code></pre>
+<p><details> <summary> Full example file below the fold </summary></p>
+<pre><code>## #&#39; Test palette
+## #&#39;
+## #&#39; This is a test palette inspired by stop-light colors
+## #&#39;
+## #&#39; @references https://en.wikipedia.org/wiki/Traffic_light
+## #&#39; @name test_pal
+## NULL
+## 
+## #&#39; @name test_pal
+## #&#39; @export
+## # Define disrete palette
+## test_pal &lt;- c(
+##   &quot;#00A850&quot;, # green
+##   &quot;#FEEF01&quot;, # yellow
+##   &quot;#F58222&quot;, # orange
+##   &quot;#E13C29&quot;  # red
+## )
+## 
+## #&#39; @name test_pal
+## #&#39; @export
+## # Define opinionated discrete palette (good, neutral, bad)
+## test_pal_op &lt;- c(test_pal[1], &quot;grey50&quot;, test_pal[4])
+## 
+## #&#39; @name test_pal
+## #&#39; @export
+## # Define two colors for endpoints of continuous palette
+## test_pal_cont &lt;- c(test_pal[1], test_pal[2])
+## 
+## #&#39; @name test_pal
+## #&#39; @export
+## # Define three colors for endpoints of diverging continuous pallete (high, middle, low)
+## test_pal_div  &lt;- c(test_pal[1], test_pal[2], test_pal[4])</code></pre>
+<p></details></p>
 <p>These palettes can then be used in a number of functions (thanks to the <a href="https://github.com/emilyriederer/Rtistic/blob/master/R/palette-infrastructure.R"><code>R/palette-infrastructure.R</code> file</a>):</p>
 <ul>
 <li><code>scale_(color/colour/fill)_discrete_rtistic(palette = &quot;test&quot;)</code>: Discrete palette with optional <code>extend</code> parameter to interpolate more values</li>
@@ -85,18 +119,22 @@ test_pal_div &lt;- c(&quot;green&quot;, &quot;yellow&quot;, &quot;red&quot;)    
 <li><code>scale_(color/colour/fill)_diverging_rtistic(palette = &quot;test&quot;)</code>: Diverging continuous palette</li>
 </ul>
 <p>For example, that contribution leads to the following styles:</p>
-<p><img src="/post/2019-05-25-rtistic-a-package-by-numbers-repo.en_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<p>To “level up”, participants can also use <code>roxygen2</code> syntax to add documentation about their theme and showcase it by editing the <a href="https://github.com/emilyriederer/Rtistic/blob/master/scratchpad/gg-theme-demo.Rmd"><code>my-gg-theme-vignette.Rmd</code> template</a>. Adding actual <code>ggplot2</code> and RMarkdown themes is slightly more advanced, but the core design of participants altering templates still holds.</p>
+<p><img src="/post/2019-05-25-rtistic-a-package-by-numbers-repo.en_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>To “level up”, participants can also use <code>roxygen2</code> syntax to add documentation about their theme and showcase it by editing the <a href="https://github.com/emilyriederer/Rtistic/blob/master/scratchpad/gg-theme-demo.Rmd"><code>my-gg-theme-vignette.Rmd</code> template</a>.</p>
+<p>The <code>get_rtistic_palettes()</code> function scans the package’s namespace for anything ending in <code>_pal</code> to help users learn about all the available options<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a>:</p>
+<pre class="r"><code>Rtistic::get_rtistic_palettes()</code></pre>
+<pre><code>## [1] &quot;test&quot;</code></pre>
 <p>You can try all this out for yourself on <a href="https://rstudio.cloud/project/363105">RStudio Cloud</a>. Simply resave the <code>my-gg-palette.R</code> file, define new palette colors (named <code>{xxx}_{pal/pal_op/pal_cont/pal_div}</code>), rebuild the package, open the <code>vignettes/my-gg-theme-vignette.Rmd</code> file, change <code>palette = &quot;test&quot;</code> to <code>palette = &quot;{xxx}&quot;</code> throughout, and reknit!</p>
+<p>Adding actual <code>ggplot2</code> and RMarkdown themes is slightly more advanced, but the core design of participants altering templates still holds. Helper functions and instructions are also provided for some of the most esoteric tasks, like encoding a logo image as a URI to be included as a custom footer of a self-contained RMarkdown.</p>
 </div>
 <div id="but-valuable" class="section level3">
 <h3>…but Valuable</h3>
 <p>Despite the low barriers to entry, my hope is that there is a lot to learn with <code>Rtistic</code>. For example, participants might get exposure to:</p>
 <ul>
-<li><strong>Package structure</strong>: By filling in the missing pieces of an existing package, teams will navigate through an R package file structure. Whether or not teams have package building aspirations, being able to read package source code is a useful skill.<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a> It’s also a chance to practice good documentation with commenting and vignette writing.<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a></li>
-<li><strong>Collaboration on GitHub</strong>: I’m convicted no one will ever understand git or GitHub by <em>reading</em>. The easiest way to learn forks, branches, and pull requests is to use them. <code>Rtistic</code> attempts to make this as easy as possible. Multiple teams should never need to edit the same file, so the likelihood of a big merge conflict problem is low.<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a></li>
+<li><strong>Package structure</strong>: By filling in the missing pieces of an existing package, teams will navigate through an R package file structure. Whether or not teams have package building aspirations, being able to read package source code is a useful skill.<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a> It’s also a chance to practice good documentation with commenting and vignette writing.<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a></li>
+<li><strong>Collaboration on GitHub</strong>: I’m convicted no one will ever understand git or GitHub by <em>reading</em>. The easiest way to learn forks, branches, and pull requests is to use them. <code>Rtistic</code> attempts to make this as easy as possible. Multiple teams should never need to edit the same file, so the likelihood of a big merge conflict problem is low.<a href="#fn6" class="footnoteRef" id="fnref6"><sup>6</sup></a></li>
 <li><strong>ggplot2 styling</strong>: <code>ggplot2</code> is intuitive; however, compared to most of the <code>tidyverse</code>, it is intuitive in the sense of having a rich philosophical basis - not in the sense of “barely needed to read the docs because I can infer it all”. Unfortunately, this difference can make it feel <em>unintuitive</em> to new users. Exposure to <code>ggplot2</code> theme options pays dividends in getting the most from the package.</li>
-<li><strong>HTML / CSS</strong>: R users more typically come from math and stats backgrounds (versus tech), knowledge of front-end web development can be limited. However, users of any of the <code>*down</code> packages<a href="#fn6" class="footnoteRef" id="fnref6"><sup>6</sup></a> can benefit a lot by having even a cursory understanding of these tools to take advantage of RMarkdown’s customization capabilities.</li>
+<li><strong>HTML / CSS</strong>: R users more typically come from math and stats backgrounds (versus tech), knowledge of front-end web development can be limited. However, users of any of the <code>*down</code> packages<a href="#fn7" class="footnoteRef" id="fnref7"><sup>7</sup></a> can benefit a lot by having even a cursory understanding of these tools to take advantage of RMarkdown’s customization capabilities.</li>
 </ul>
 <p>If this seems like too much at once, the modular nature of the project makes it easy to strip down. If GitHub is out of scope, participants can locally change a small number of files and share them with an organizer for compilation. If <code>ggplot2</code> and HTML/CSS are too much to tackle at once, either the plot or RMarkdown theme pieces can be ignored.</p>
 </div>
@@ -108,7 +146,60 @@ test_pal_div &lt;- c(&quot;green&quot;, &quot;yellow&quot;, &quot;red&quot;)    
 <li>As many <a href="https://github.com/emilyriederer/Rtistic/blob/master/scratchpad/gg-theme-demo.Rmd"><strong>ggplot2 theme options</strong></a> as I could possibly fit in one plot with the goal of exposing participants to all of the possible options</li>
 </ul>
 <p>The plot, in particular, is hopefully illuminating since the theme is in no way intended to be coherent. Each design choice uses wildly different fonts, colors, and alignments to make it very clear what line of code corresponds to each element:</p>
-<p><img src="/post/2019-05-25-rtistic-a-package-by-numbers-repo.en_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="/post/2019-05-25-rtistic-a-package-by-numbers-repo.en_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><details><summary> Code here </summary></p>
+<pre class="r"><code>library(ggplot2)
+# sample data for plot ----
+points &lt;- 
+  data.frame(
+    x = rep(1:10,3), 
+    y = rep(1:10,3), 
+    z = sort(rep(letters[1:2], 15)),
+    w = rep(letters[3:4], 15)
+    )
+# ggplot using many theme options ----
+ggplot(data = points, 
+       mapping = aes(x = x, y = y, col = factor(x))) + 
+  geom_point(size = 5) + 
+  facet_grid(w ~ z, switch = &quot;y&quot;) +
+  theme(
+    
+    plot.background = element_rect(fill = &quot;lightyellow&quot;),
+    plot.title = element_text(size = 30, hjust = 0.25),
+    plot.subtitle = element_text(size = 20, hjust = 0.75, color = &quot;mediumvioletred&quot;, family = &quot;serif&quot;),
+    plot.caption = element_text(size = 10, face = &quot;italic&quot;, angle = 25),
+    
+    panel.background = element_rect(fill = &#39;lightblue&#39;, colour = &#39;darkred&#39;, size = 4),
+    panel.border = element_rect(fill = NA, color = &quot;green&quot;, size = 2),
+    panel.grid.major.x = element_line(color = &quot;purple&quot;, linetype = 2),
+    panel.grid.minor.x = element_line(color = &quot;orange&quot;, linetype = 3),
+    panel.grid.minor.y = element_blank(),
+    
+    axis.title.x = element_text(face = &quot;bold.italic&quot;, color = &quot;blue&quot;),
+    axis.title.y = element_text(family = &quot;mono&quot;, face = &quot;bold&quot;, size = 20, hjust = 0.25),
+    axis.text = element_text(face = &quot;italic&quot;, size = 15),
+    axis.text.x.bottom = element_text(angle = 180), # note that axis.text options from above are inherited
+    
+    strip.background = element_rect(fill = &quot;magenta&quot;),
+    strip.text.y = element_text(color = &quot;white&quot;),
+    strip.placement = &quot;outside&quot;,
+    
+    legend.background = element_rect(fill = &quot;orangered4&quot;), # generally will want to match w plot background
+    legend.key = element_rect(fill = &quot;orange&quot;),
+    legend.direction = &quot;horizontal&quot;,
+    legend.position = &quot;bottom&quot;,
+    legend.justification = &quot;left&quot;,
+    legend.title = element_text(family = &quot;serif&quot;, color = &quot;white&quot;),
+    legend.text = element_text(family = &quot;mono&quot;, face = &quot;italic&quot;, color = &quot;limegreen&quot;)
+    
+  ) +
+  labs(title = &quot;test title&quot;,
+       subtitle = &quot;test subtitle&quot;,
+       x = &quot;my x axis&quot;,
+       y = &quot;my y axis&quot;,
+       caption = &quot;this is a caption&quot;,
+       col = &quot;Renamed Legend&quot;) </code></pre>
+<p></details></p>
 <p>Again, try this out on <a href="https://rstudio.cloud/project/363105">RStudio Cloud</a> by opening up the <code>scratchpad/gg-theme-demo.Rmd</code> and playing around.</p>
 </div>
 <div id="take-it-for-a-spin" class="section level3">
@@ -120,10 +211,11 @@ test_pal_div &lt;- c(&quot;green&quot;, &quot;yellow&quot;, &quot;red&quot;)    
 <hr />
 <ol>
 <li id="fn1"><p>As in the ever popular “draw an owl” <a href="https://knowyourmeme.com/memes/how-to-draw-an-owl">meme</a><a href="#fnref1">↩</a></p></li>
-<li id="fn2"><p>I will admit that the <code>opinonated</code> scale likely is not useful or relevant in many cases. However, since corporate color palettes are one place I can imagine <code>Rtistic</code> being useful, I decided to include it since having a predefined mapping of “good” and “bad” colors (e.g. for profits and losses). I also think it’s a nice discrete parallel to the more typical <code>diverging</code> scale for continuous-valued variables.<a href="#fnref2">↩</a></p></li>
-<li id="fn3"><p>For example, I recently started using a package with very little documentation but an excellent test suite. Once I figured this out, I was able to use it a lot more efficiently by learning from the test examples.<a href="#fnref3">↩</a></p></li>
-<li id="fn4"><p>Another conviction of mine is that these skills should be used for most R projects – not just packages. R’s strong conventions and culture for documentation are one of its hallmarks.<a href="#fnref4">↩</a></p></li>
-<li id="fn5"><p>Obviously, merge conflicts are an important concept to understand, but as a day-one intro, “how this ideally works” is easier to grasp.<a href="#fnref5">↩</a></p></li>
-<li id="fn6"><p>Or Shiny, flexdashboard, etc.<a href="#fnref6">↩</a></p></li>
+<li id="fn2"><p>I will admit that the <code>opinionated</code> scale likely is not useful or relevant in many cases. However, since corporate color palettes are one place I can imagine <code>Rtistic</code> being useful, I decided to include it since having a predefined mapping of “good” and “bad” colors (e.g. for profits and losses). I also think it’s a nice discrete parallel to the more typical <code>diverging</code> scale for continuous-valued variables.<a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p>This allows discoverbility without having to maintain any centralized list of palettes since, for logistical reasons, <code>Rtistic</code> is designed to be completely modular.<a href="#fnref3">↩</a></p></li>
+<li id="fn4"><p>For example, I recently started using a package with very little documentation but an excellent test suite. Once I figured this out, I was able to use it a lot more efficiently by learning from the test examples.<a href="#fnref4">↩</a></p></li>
+<li id="fn5"><p>Another conviction of mine is that these skills should be used for most R projects – not just packages. R’s strong conventions and culture for documentation are one of its hallmarks.<a href="#fnref5">↩</a></p></li>
+<li id="fn6"><p>Obviously, merge conflicts are an important concept to understand, but as a day-one intro, “how this ideally works” is easier to grasp.<a href="#fnref6">↩</a></p></li>
+<li id="fn7"><p>Or Shiny, flexdashboard, etc.<a href="#fnref7">↩</a></p></li>
 </ol>
 </div>
