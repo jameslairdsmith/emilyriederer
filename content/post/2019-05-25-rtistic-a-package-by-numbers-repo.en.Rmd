@@ -11,11 +11,11 @@ subtitle: ''
 ---
 
 
-Last winter, I attended a holiday party at a "paint-and-sip" venue. For those unfamiliar, "paint-and-sip" is a semi-trendy cottage industry offering boutique events of music, wine, and a guided painting activity. For example, my group painted sasquatch on a snowy winter's eve:
+Last winter, I attended a holiday party at a "paint-and-sip" venue. For those unfamiliar, "paint-and-sip" is a semi-trendy cottage industry offering evenings of music, wine, and a guided painting activity. For example, my group painted sasquatch on a snowy winter's eve:
 
 ![A very bad painting of a sasquatch in a forest](/img/rtistic-files/IMG_1089.jpg)
 
-As often happens, this completely unrelated thing got me thinking about R. What was it that made coming together fun when we lacked the talent and experience to do well, when it almost surely wouldn't turn out very well, and when "failure" would be very visible and undeniable? Many of these same dimensions (novelty, risk, and visibility) often seem to inhibit new coders, but somehow they were core to the value proposition of the paint-and-sip business. 
+As often happens, this completely unrelated thing set me thinking about R. What made painting fun when we lacked the talent and experience to excel, when it almost surely wouldn't turn out very well, and when "failure" would be very visibly and undeniably on display? Many of these same dimensions (novelty, risk, and visibility) often intimidate new coders, yet somehow they were core to the paint-and-sip business model. 
 
 (Admittedly, the "sipping" part may be a major confounder here, but this isn't a post on causal inference!)
 
@@ -26,7 +26,7 @@ Of course, this was nothing more than a tongue-in-cheek thought experiment, but 
 - **The ability to succeed wasn't correlated with anything important**. Hopefully, no one is going to measure their self-worth by sasquatch painting. In contrast, sometimes people unfotunately seem to associate their current technical abilities with a more foundational measure or worth or intelligence. This dramatically increses the cost of "failure" and disuades exploration. 
 - **The playing field was mostly level**. As far as I know, there are no experts in acryllic sasquatch painting.
 
-It did pique my curiosity if these principles could help introduce concepts like GitHub or package development in a friendlier and more engaging way. Over the next few mnths, life carried on and took me in a variety of directions, including to the Chicago R unconf where I marvelled at the passion and productivity of teams coming together for a two day hackathon. Somewhere in there, a project idea began to form. 
+It did pique my curiosity if these principles could help introduce concepts like GitHub or package development in a friendlier and more engaging way. Over the next few months, life carried on and took me in a variety of directions, including to the Chicago R unconf where I marvelled at the passion and productivity of teams coming together for a two day hackathon. Somewhere in there, a project idea began to form. 
 
 ## Introducing `Rtistic`
 
@@ -34,11 +34,11 @@ Now that you've indulged my musings, let me introduce my [`Rtistic`](https://git
 
 ![Rtistic hex logo](/img/rtistic-files/logo.png)
 
-Structurally, `Rtistic` is a package in the sense that you could install it with `devtools::install_github()`. However, it is not an R package in the sense that you would be sorely disappointed if you did that. `Rtistic` is incomplete, by intent, and always will be. It  is a skeleton of an R package and intended to be used as a "hackathon-in-a-box". Small groups at a meetup, office, or classroom can come together and collectively build out a package containing palettes and themes for `ggplot2` and RMarkdown. Much like the paint-and-sip, it strives to be highly structured and low stakes. 
+Structurally, `Rtistic` is a package in the sense that you could install it with `devtools::install_github()`. However, it is not an R package in the sense that you would be sorely disappointed if you did that. `Rtistic` is incomplete, by intent, and always will be. It is a skeleton of an R package and intended to be used as a "hackathon-in-a-box" or an "R package cookbook". Small groups at a meetup, office, or classroom can come together and collectively build out a package containing palettes and themes for `ggplot2` and RMarkdown. Much like the paint-and-sip, it strives to be highly structured and low stakes. 
 
 ### Structure
 
-Much of the boilerplate code already exists, so partipants are less likely to get caught up on some cryptic error message. Off-the-shelf, the project's file structure looks like what's shown below. Files prefixed with `my-` are open to edits by each team. 
+Much of the boilerplate code already exists, so partipants are less likely to get caught up on some cryptic error message. Off-the-shelf, the project's file structure looks similar to what's shown below (additional files may be added after I post this). Files prefixed with `my-` are open to edits by each team. 
 
 ```{r eval = FALSE, highlight = FALSE}
 -- DESCRIPTION
