@@ -140,7 +140,7 @@ grid.arrange(p_disc, p_op, p_cont, p_div, ncol = 2)
 
 To "level up", participants can also use `roxygen2` syntax to add documentation about their theme and showcase it by editing the [`my-gg-theme-vignette.Rmd` template](https://github.com/emilyriederer/Rtistic/blob/master/scratchpad/gg-theme-demo.Rmd). 
 
-The `get_rtistic_palettes()` function scans the package's namespace for anything ending in `_pal` to help users learn about all the available options^[This allows discoverbility without having to maintain any centralized list of palettes since, for logistical reasons, `Rtistic` is designed to be completely modular.]:
+The `get_rtistic_palettes()` function scans the package's namespace for anything ending in `_pal` to help users learn about all the available options^[This allows discoverability without having to maintain any centralized list of palettes since, for logistical reasons, `Rtistic` is designed to be completely modular.]:
 
 ```{r}
 Rtistic::get_rtistic_palettes()
