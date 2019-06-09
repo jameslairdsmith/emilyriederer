@@ -36,6 +36,8 @@ Now that you've indulged my musings, let me introduce my [`Rtistic`](https://git
 
 Structurally, `Rtistic` is a package in the sense that you could install it with `devtools::install_github()`. However, it is not an R package in the sense that you would be sorely disappointed if you did that. `Rtistic` is incomplete, by intent, and always will be. It is a skeleton of an R package and intended to be used as a "hackathon-in-a-box" or an "R package cookbook". Small groups at a meetup, office, or classroom can come together and collectively build out a package containing palettes and themes for `ggplot2` and RMarkdown. Much like the paint-and-sip, it strives to be highly structured and low stakes. 
 
+> **Caveat lector!:** `Rtistic` continues to evolve. For example, since first writing the below, I have added support for `xaringan`, utilized the new [GitHub template repository](https://github.blog/2019-06-06-generate-new-repositories-with-repository-templates/) functionality, and further standardized file names. THe description below remains accurate *in spirit*, but the repo `README` is the best resource for the most up-to-date information for actual use.
+
 ### Structure
 
 Much of the boilerplate code already exists, so partipants are less likely to get caught up on some cryptic error message. Off-the-shelf, the project's file structure looks similar to what's shown below (additional files may be added after I post this). Files prefixed with `my-` are open to edits by each team. 
