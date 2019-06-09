@@ -81,7 +81,38 @@ test_pal_op &lt;- c(&quot;green&quot;, &quot;grey50&quot;, &quot;red&quot;)     
 test_pal_cont &lt;- c(&quot;green&quot;, &quot;yellow&quot;)             # endpoints for a continous scale
 test_pal_div &lt;- c(&quot;green&quot;, &quot;yellow&quot;, &quot;red&quot;)       # reference points for diverging scale</code></pre>
 <p><details> <summary> Full example file below the fold </summary></p>
-<pre><code>## 404: Not Found</code></pre>
+<pre><code>## #&#39; Test palette
+## #&#39;
+## #&#39; This is a test palette inspired by stop-light colors
+## #&#39;
+## #&#39; @references https://en.wikipedia.org/wiki/Traffic_light
+## #&#39; @name test_pal
+## NULL
+## 
+## #&#39; @name test_pal
+## #&#39; @export
+## # Define disrete palette
+## test_pal &lt;- c(
+##   &quot;#00A850&quot;, # green
+##   &quot;#FEEF01&quot;, # yellow
+##   &quot;#F58222&quot;, # orange
+##   &quot;#E13C29&quot;  # red
+## )
+## 
+## #&#39; @name test_pal
+## #&#39; @export
+## # Define opinionated discrete palette (good, neutral, bad)
+## test_pal_op &lt;- c(test_pal[1], &quot;grey50&quot;, test_pal[4])
+## 
+## #&#39; @name test_pal
+## #&#39; @export
+## # Define two colors for endpoints of continuous palette
+## test_pal_cont &lt;- c(test_pal[1], test_pal[2])
+## 
+## #&#39; @name test_pal
+## #&#39; @export
+## # Define three colors for endpoints of diverging continuous pallete (high, middle, low)
+## test_pal_div  &lt;- c(test_pal[1], test_pal[2], test_pal[4])</code></pre>
 <p></details></p>
 <p>These palettes can then be used in a number of functions (thanks to the <a href="https://github.com/emilyriederer/Rtistic/blob/master/R/palette-infrastructure.R"><code>R/palette-infrastructure.R</code> file</a>):</p>
 <ul>

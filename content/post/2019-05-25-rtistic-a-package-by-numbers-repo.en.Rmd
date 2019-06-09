@@ -91,7 +91,7 @@ test_pal_div <- c("green", "yellow", "red")       # reference points for divergi
 <summary> Full example file below the fold </summary>
 
 ```{r echo = FALSE}
-text <- RCurl::getURL("https://raw.githubusercontent.com/emilyriederer/Rtistic/master/R/my-gg-palette.R")
+text <- RCurl::getURL("https://raw.githubusercontent.com/emilyriederer/Rtistic/master/R/gg-palette-test.R")
 cat(text)
 ```
 
