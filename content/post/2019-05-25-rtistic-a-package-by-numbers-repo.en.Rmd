@@ -36,7 +36,7 @@ Now that you've indulged my musings, let me introduce my [`Rtistic`](https://git
 
 Structurally, `Rtistic` is a package in the sense that you could install it with `devtools::install_github()`. However, it is not an R package in the sense that you would be sorely disappointed if you did that. `Rtistic` is incomplete, by intent, and always will be. It is a skeleton of an R package and intended to be used as a "hackathon-in-a-box" or an "R package cookbook". Small groups at a meetup, office, or classroom can come together and collectively build out a package containing palettes and themes for `ggplot2` and RMarkdown. Much like the paint-and-sip, it strives to be highly structured and low stakes. 
 
-> **Caveat lector!:** `Rtistic` continues to evolve. For example, since first writing the below, I have added support for `xaringan`, utilized the new [GitHub template repository](https://github.blog/2019-06-06-generate-new-repositories-with-repository-templates/) functionality, and further standardized file names. THe description below remains accurate *in spirit*, but the repo `README` is the best resource for the most up-to-date information for actual use.
+> **Caveat lector!:** `Rtistic` continues to evolve. For example, since first writing the below, I have added support for `xaringan`, utilized the new [GitHub template repository](https://github.blog/2019-06-06-generate-new-repositories-with-repository-templates/) functionality, and further standardized file names. The description below remains accurate *in spirit*, but the repo `README` is the best resource for the most up-to-date information for actual use.
 
 ### Structure
 
@@ -147,8 +147,6 @@ The `get_rtistic_palettes()` function scans the package's namespace for anything
 ```{r}
 Rtistic::get_rtistic_palettes()
 ```
-
-You can try all this out for yourself on [RStudio Cloud](https://rstudio.cloud/project/363105). Simply resave the `my-gg-palette.R` file, define new palette colors (named `{xxx}_{pal/pal_op/pal_cont/pal_div}`), rebuild the package, open the `vignettes/my-gg-theme-vignette.Rmd` file, change `palette = "test"` to `palette = "{xxx}"` throughout, and reknit!
 
 Adding actual `ggplot2` and RMarkdown themes is slightly more advanced, but the core design of participants altering templates still holds. Helper functions and instructions are also provided for some of the most esoteric tasks, like encoding a logo image as a URI to be included as a custom footer of a self-contained RMarkdown.
 
@@ -283,8 +281,6 @@ ggplot(data = points,
 ```
 
 </details>
-
-Again, try this out on [RStudio Cloud](https://rstudio.cloud/project/363105) by opening up the `scratchpad/gg-theme-demo.Rmd` and playing around.
 
 ### Take it for a Spin!
 
