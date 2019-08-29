@@ -36,7 +36,7 @@ subtitle: ''
 </div>
 <p>Structurally, <code>Rtistic</code> is a package in the sense that you could install it with <code>devtools::install_github()</code>. However, it is not an R package in the sense that you would be sorely disappointed if you did that. <code>Rtistic</code> is incomplete, by intent, and always will be. It is a skeleton of an R package and intended to be used as a “hackathon-in-a-box” or an “R package cookbook”. Small groups at a meetup, office, or classroom can come together and collectively build out a package containing palettes and themes for <code>ggplot2</code> and RMarkdown. Much like the paint-and-sip, it strives to be highly structured and low stakes.</p>
 <blockquote>
-<p><strong>Caveat lector!:</strong> <code>Rtistic</code> continues to evolve. For example, since first writing the below, I have added support for <code>xaringan</code>, utilized the new <a href="https://github.blog/2019-06-06-generate-new-repositories-with-repository-templates/">GitHub template repository</a> functionality, and further standardized file names. THe description below remains accurate <em>in spirit</em>, but the repo <code>README</code> is the best resource for the most up-to-date information for actual use.</p>
+<p><strong>Caveat lector!:</strong> <code>Rtistic</code> continues to evolve. For example, since first writing the below, I have added support for <code>xaringan</code>, utilized the new <a href="https://github.blog/2019-06-06-generate-new-repositories-with-repository-templates/">GitHub template repository</a> functionality, and further standardized file names. The description below remains accurate <em>in spirit</em>, but the repo <code>README</code> is the best resource for the most up-to-date information for actual use.</p>
 </blockquote>
 <div id="structure" class="section level3">
 <h3>Structure</h3>
@@ -127,7 +127,6 @@ test_pal_div &lt;- c(&quot;green&quot;, &quot;yellow&quot;, &quot;red&quot;)    
 <p>The <code>get_rtistic_palettes()</code> function scans the package’s namespace for anything ending in <code>_pal</code> to help users learn about all the available options<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a>:</p>
 <pre class="r"><code>Rtistic::get_rtistic_palettes()</code></pre>
 <pre><code>## [1] &quot;test_pal&quot;</code></pre>
-<p>You can try all this out for yourself on <a href="https://rstudio.cloud/project/363105">RStudio Cloud</a>. Simply resave the <code>my-gg-palette.R</code> file, define new palette colors (named <code>{xxx}_{pal/pal_op/pal_cont/pal_div}</code>), rebuild the package, open the <code>vignettes/my-gg-theme-vignette.Rmd</code> file, change <code>palette = &quot;test&quot;</code> to <code>palette = &quot;{xxx}&quot;</code> throughout, and reknit!</p>
 <p>Adding actual <code>ggplot2</code> and RMarkdown themes is slightly more advanced, but the core design of participants altering templates still holds. Helper functions and instructions are also provided for some of the most esoteric tasks, like encoding a logo image as a URI to be included as a custom footer of a self-contained RMarkdown.</p>
 </div>
 <div id="but-valuable" class="section level3">
@@ -203,7 +202,6 @@ ggplot(data = points,
        caption = &quot;this is a caption&quot;,
        col = &quot;Renamed Legend&quot;) </code></pre>
 <p></details></p>
-<p>Again, try this out on <a href="https://rstudio.cloud/project/363105">RStudio Cloud</a> by opening up the <code>scratchpad/gg-theme-demo.Rmd</code> and playing around.</p>
 </div>
 <div id="take-it-for-a-spin" class="section level3">
 <h3>Take it for a Spin!</h3>
