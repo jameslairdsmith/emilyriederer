@@ -1,5 +1,5 @@
 ---
-title: 'Resource Roundup: R in Industry Edition'
+title: 'Resource Round-Up: R in Industry Edition'
 author: Emily Riederer
 date: '2019-08-30'
 tags:
