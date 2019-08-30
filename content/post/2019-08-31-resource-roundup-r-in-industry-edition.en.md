@@ -10,11 +10,7 @@ slug: resource-roundup-r-in-industry-edition
 
 One of the ways that practices of reproducible research can be brought into industry is through the development of custom R packages and data tools for one's company / organization. Not only can these tools deliver large efficiency gains and standardization, they ideally infuse corporate culture with the shared passion and mission found in open source communities. 
 
-Similar to [my favorite readings on reproducible research], the benefits of internal R packages are a common theme in my [talks](https://emilyriederer.netlify.com/page/talks/) and on my Twitter feed. As seen, for example, in my 10-tweet answer in the following thread. 
-
-<center>
-{{< tweet 1130993623548534785 >}}
-</center>
+Similar to [my favorite readings on reproducible research], the benefits of internal R packages are a common theme in my [talks](https://emilyriederer.netlify.com/page/talks/) and on my Twitter feed^[See [this thread](https://twitter.com/EmilyRiederer/status/1131026441095843840?s=20) for example]. 
 
 This post is a brief annotated bibliography of a few of my favorite "R use / packages in industry" case studies. There are far more great examples than I could ever cover, but the ones I tend to rely upon span a number of different types of organizations, all of whom use R in different and interesting ways and openly share both the benefits and challenges they've found. My summaries are intentionally kept short so that the authors' words speak for themselves. I'll just share a few key takeaways from each and commonalities between them. I encourage everyone to read the full articles:
 
