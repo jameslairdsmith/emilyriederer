@@ -18,6 +18,7 @@ The consequences of in industry may be less dire (e.g. inability to reproduce an
 
 Fortunately, the scientific world has a headstart on solving these problems and figuring out which computing practices deliver practitioners the most bang for the buck. For more on that, keep reading. 
 
+![](static/img/resource-round-up/reproducible-research.png)
 
 # Practical Approaches
 
@@ -41,7 +42,7 @@ Recommendations in this piece are broken down into three categories: reproducibl
 
 Typically I pick between this and "Good Enough" depending on the audience and feel confident either will be a great call to action.
 
-## On Getting to Scaling 
+## On Scale 
 
 [**rOpenSci Packages: Development, Maintenance, and Peer Review**](https://ropensci.github.io/dev_guide/)    
 Brooke Anderson, Scott Chamberlain, Anna Krystalli, Lincoln Mullen, Karthik Ram, Noam Ross, Maëlle Salmon, Melina Vidoni
