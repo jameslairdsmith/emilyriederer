@@ -7,7 +7,7 @@ I really enjoy sharing ideas - whether that be in person, in direct messages, on
 
 **Next Up:**
 
-In January 2020, I will be speaking at [rstudio::conf 2020](https://rstudio.com/conference/) in San Francisco, CA about "RMarkdown Driven Development". 
+In January 2020, I will be speaking at [rstudio::conf 2020](https://rstudio.com/conference/) in San Francisco, CA about [RMarkdown Driven Development](https://emilyriederer.netlify.com/post/rmarkdown-driven-development/). 
 
 **Do you want to hear about:**
 
