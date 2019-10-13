@@ -5,6 +5,10 @@ comments: no
 
 I really enjoy sharing ideas - whether that be in person, in direct messages, on Twitter threads, etc. Here, I share materials from these talks. Please reach out if you're interested to talk more about any of these topics!
 
+**Next Up:**
+
+In January 2020, I will be speaking at [rstudio::conf 2020](https://rstudio.com/conference/) in San Francisco, CA about "RMarkdown Driven Development". 
+
 **Do you want to hear about:**
 
 - How corporations and their analysts can benefit from adapting a data science mindset? Then check out [*What's in your Workflow?: Data science workflows for business analysis*](#wiyw)
