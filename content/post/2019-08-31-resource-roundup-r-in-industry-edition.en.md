@@ -76,6 +76,6 @@ Building data products is (relatively) easy. Building communities is hard. R dev
 
 # Getting Started
 
-If any of this sounds like something you would like to bring to your organization but you aren't sure where to start, my post on [RMarkdown Driven Development](http://127.0.0.1:7830/post/rmarkdown-driven-development/) describes a method that I have found effective to convert existing notebooks into reusable packages. 
+If any of this sounds like something you would like to bring to your organization but you aren't sure where to start, my post on [RMarkdown Driven Development](../rmarkdown-driven-development/) describes a method that I have found effective to convert existing notebooks into reusable packages. 
 
 More broadly, I was excited to see that [rstudioconf::2020](https://web.cvent.com/event/36ebe042-0113-44f1-8e36-b9bc5d0733bf/summary) is offering a training course titled "My Organization's First R Package". Consider checking out the conference for this training and surely countless more great examples of R in action at all types of organizations.
