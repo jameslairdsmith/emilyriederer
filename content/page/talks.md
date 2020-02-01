@@ -5,15 +5,23 @@ comments: no
 
 I really enjoy sharing ideas - whether that be in person, in direct messages, on Twitter threads, etc. Here, I share materials from these talks. Please reach out if you're interested to talk more about any of these topics!
 
-**Next Up:**
-
-In January 2020, I will be speaking at [rstudio::conf 2020](https://rstudio.com/conference/) in San Francisco, CA about [RMarkdown Driven Development](https://emilyriederer.netlify.com/post/rmarkdown-driven-development/). 
-
 **Do you want to hear about:**
 
+- How to evolve one-time analysis projects into sustainable data products? Then check out [*RMarkdown Driven Development*](#rmddd)
 - How corporations and their analysts can benefit from adapting a data science mindset? Then check out [*What's in your Workflow?: Data science workflows for business analysis*](#wiyw)
 - A package I developed at work for discounted cashflow valuations analysis? Then check out [*tidycf: Turning business analysis on its head by turning cashflows on their sides*](#tidycf)
 - A framework for inner-source tools and culture? Then check out [*Designing empathetic, empowering, and engaging internal tools for analytics*](#deee)
+
+## RMarkdown Driven Development {#rmddd}
+[*rstudio::conf, January 2020 in San Francisco, CA*](https://rstudio.com/conference/) 
+
+RMarkdown enables analysts to engage with code interactively, embrace literate programming, and rapidly produce a wide variety of high-quality data
+products such as documents, emails, dashboards, and websites. However, RMarkdown is less commonly explored and celebrated for the important role it can play in helping R users grow into developers. In this talk, I will provide an overview of RMarkdown Driven Development: a workflow for converting one-off analysis into a well-engineered and well-designed R package with deep empathy for user needs. We will explore how the methodical incorporation of good coding practices such as modularization and testing naturally evolves a single-file RMarkdown into an R project or package. Along the way, we will discuss big-picture questions like “optimal stopping” (why some data products are better left as single files or projects) and concrete details such as the {here} and {testthat} packages which can provide step-change improvements to project sustainability.
+
+Slides on [Slideshare](https://www.slideshare.net/EmilyRiederer/rmarkdown-driven-development-rstudioconf-2020)
+
+Video coming soon.
+
 
 ## What's in your Workflow?: Data science workflows for business analysis {#wiyw}
 [*Domino Data Pop-Up, November 2017 in Chicago, IL*](https://popup.dominodatalab.com/chicago/)
