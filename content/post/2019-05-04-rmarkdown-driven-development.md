@@ -122,3 +122,11 @@ More importantly, I encourage *project* developers to consider whether they shou
 ## That's a Wrap!
 
 Voila! Now our humble RMarkdown has evolved all the way into a complete R package. Again, is this always necessary? Definitely not. Is it always advisable? No. But regardless of what end-state you want to leave your RMarkdown in, it's always worth considering how it can be groomed towards becoming a more sustainable data product. 
+
+## Updates
+
+Since I initially wrote about this topic, I have since continued to explore this idea. Below is a list of more related content:
+
+- [Slides](https://www.slideshare.net/EmilyRiederer/rmarkdown-driven-development-rstudioconf-2020) from my rstudio::conf 2020 talk
+- Follow-up post giving a [technical appendix](https://emilyriederer.netlify.com/post/rmddd-tech-appendix/) of related R packages and tools that may help with this process
+
