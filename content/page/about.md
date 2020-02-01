@@ -6,7 +6,7 @@ comments: false
 
 I love statistics, data science, open source, and especially [#rstats](https://twitter.com/hashtag/rstats). 
 
-Currently, I work as an Analytics Manager at Capital One. My team focuses on reimagining our analytical infrastructure by building data products, elevating business analysis with novel data sources and statistical methods, and providing consultation and training to our partner teams.
+Currently, I'm a Sr Analytics Manager at Capital One. My team focuses on reimagining our analytical infrastructure by building data products, elevating business analysis with novel data sources and statistical methods, and providing consultation and training to our partner teams.
 
 Previously, I earned degrees in Mathematics and Mathematical Decision Sciences (Stats / OR) at UNC Chapel Hill. At Carolina, I was a research assistant in the Department of Statistics & Operations Research and focused on testing the impact of Emergency Department patient flow strategies using discrete event simulation.
 
