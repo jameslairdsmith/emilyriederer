@@ -1,0 +1,361 @@
+---
+title: 'RMarkdown Driven Development: the Technical Appendix'
+author: Emily Riederer
+date: '2020-02-01'
+slug: rmddd-tech-appendix
+categories: []
+tags:
+  - pkgdev
+  - rstats
+  - workflow
+  - rmarkdown
+subtitle: ''
+---
+
+
+
+<div id="rmarkdown-driven-development-the-technical-appendix" class="section level1">
+<h1>RMarkdown Driven Development: The Technical Appendix</h1>
+<div id="motivation" class="section level2">
+<h2>Motivation</h2>
+<p>My initial post on <a href="https://emilyriederer.netlify.com/post/rmarkdown-driven-development/">RMarkdown Driven Development</a> focuses on major <em>concepts</em> in the process of evolving a one-time, single-file analysis into a sustainable analytical tool. In the spirit of Etsy’s <a href="https://codeascraft.com/2018/10/10/etsys-experiment-with-immutable-documentation/">immutable documentation</a>, I intentionally minimized references to specific tools or packages. After all, software is transient; principles are evergreen.</p>
+<p>However, RMarkdown Driven Development is more than just a <em>conceptual</em> framework. There are three main components: the main conceptual workflow (the why-to), the technical implementation (the how-to), and the comparison of merits between different destination states (the what-now). I touched on all three of these briefly in my rstudio::conf 2020 presentation<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>, but plan to explore each more deeply in their own post. This post focuses on the second: tools for technical implementation.</p>
+<p>To implement RMarkdown Driven Development (RmdDD), one should take full advantage of the current state-of-the-art in R developer tools and the RStudio IDE. This article surveys helpful some of these helpful packages and tools. As the title implies, this piece is a appendix and not a complete narrative. It is neither a stand-along replacement for the original post, nor does it intend completely explain each referenced package and tool it mentions. This companion piece simply focuses on awareness raising for the plethora of tools that can make your job as a (file / project / package) engineer easier.</p>
+</div>
+<div id="review-of-rmarkdown-driven-development" class="section level2">
+<h2>Review of RMarkdown Driven Development</h2>
+<p>Broadly speaking, RMarkdown Driven Development has five main steps.</p>
+<ol style="list-style-type: decimal">
+<li>Removing troublesome components</li>
+<li>Rearranging chunks</li>
+<li>Reducing duplication with functions</li>
+<li>Modularizing Rmd chunks into separate files and folders</li>
+<li>Migrating modularized project assets into a package</li>
+</ol>
+<p>Steps 1-3 result in a well-engineered single-file RMarkdown, Step 4 in an R Project, and finally Step 5 in a Package. Critically, RmdDD introduces good software engineering practices as early as possible in each step of this workflow. This means that you can stop at steps 3, 4, or 5, and even up in a sustainable analytical tool in the form of either a single file <code>.Rmd</code>, an R project, or a package.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></p>
+<p>Many existing R packages and IDE features can aid in each of these steps. The rest of this post will review these tools step-by-step.</p>
+</div>
+<div id="tool-name-dropping" class="section level2">
+<h2>Tool Name-Dropping</h2>
+<p>The following R packages, RMarkdown features, and RStudio IDE utilities are mentioned in this post. If some are of particular interest to you, you can search this post to jump to where they are mentioned. Do not be overwhelmed by the sheer number of tools and functionality mentioned. Very few are actually necessary to conduct RmdDD or to build a good analysis tool. Simply pick whichever tools you like to add to your toolkit.</p>
+<p><strong>R Packages</strong></p>
+<ul>
+<li><code>rmarkdown</code></li>
+<li><code>keyring</code></li>
+<li><code>here</code></li>
+<li><code>roxygen2</code></li>
+<li><code>assertr</code></li>
+<li><code>pointblank</code></li>
+<li><code>lintr</code></li>
+<li><code>styler</code></li>
+<li><code>spelling</code></li>
+<li><code>DT</code></li>
+<li><code>xfun</code></li>
+<li><code>diffr</code></li>
+<li><code>ProjectTemplate</code></li>
+<li><code>starters</code></li>
+<li><code>workflowr</code></li>
+<li><code>renv</code></li>
+<li><code>drake</code></li>
+<li><code>usethis</code></li>
+<li><code>devtools</code></li>
+<li><code>testthat</code></li>
+<li><code>pkgdown</code></li>
+<li><code>ghactions</code></li>
+</ul>
+<p><strong>RMarkdown Features</strong></p>
+<ul>
+<li>Parameters</li>
+<li>Named chunks</li>
+<li>Code download</li>
+<li>Embed a file</li>
+</ul>
+<p><strong>RStudio IDE Utilities</strong></p>
+<ul>
+<li>Parameters UI</li>
+<li>Named chunks</li>
+<li>Indexed comments</li>
+<li>Function documentation skeleton shortcut</li>
+<li>Live spellcheck</li>
+<li>R Project (<code>.Rproj</code>)</li>
+<li>Version control</li>
+<li>Package build pane</li>
+</ul>
+<p>The follow diagram depicts where each referenced tool fits in to the workflow:</p>
+<div class="figure">
+<img src="/post/2020-02-01-rmarkdown-driven-development-the-technical-appendix.en_files/rmdd-tech-appendix.PNG" alt="Diagram of packages and tools on RmdDD timeline" />
+<p class="caption">Diagram of packages and tools on RmdDD timeline</p>
+</div>
+</div>
+<div id="step-1-removing-troublesome-components" class="section level2">
+<h2>Step 1: Removing troublesome components</h2>
+<p>The goal of this step is to remove ‘clutter’ that your RMarkdown accumulated over the course of this analysis. Core examples are removing hard-coded variables, plain text credentials, local file paths, and unused code chunks.</p>
+<div id="convert-hard-coded-variables-to-parameters" class="section level3">
+<h3>Convert hard-coded variables to parameters</h3>
+<p>Hard-coded values make code brittle. Future users may not know when and where to change them, or may change them inconsistently and violate the internal integrity of the analysis.</p>
+<p>For example, imagine a quarterly report that requires filter multiple datasets to the same date range. This give an analyst updating the report to make multiple types of errors. First, they might forget to change the dates altogether, resulting in stale information. Even worse, they might remember to change <em>some</em> of the dates but accidentally miss one and end up blending two inconsistent data sources.</p>
+<pre><code>data1_lastyr &lt;- 
+  data1 %&gt;%
+  filter(between(date, ‘2018-01-01’, ‘2018-03-31’))
+  
+data2_lastyr &lt;- 
+  data2 %&gt;%
+  filter(between(date, ‘2018-01-01’, ‘2018-03-31’))</code></pre>
+<p>Instead, <a href="https://rmarkdown.rstudio.com/lesson-6.html">RMarkdown parameters</a> allow us highlight key variables in the YAML header, and turn the entire RMarkdown document into a ‘megafunction’.</p>
+<pre><code>---
+title: “My Analysis&quot;
+output: html_document
+params:
+  start: ‘2018-01-01’
+  end: ‘2018-03-31’
+---</code></pre>
+<p>These parameters are stored as list items in the <code>params</code> variable and can be referenced in the code like this:</p>
+<pre><code>data1_lastyr &lt;- 
+  data1 %&gt;%
+  filter(between(date, params$start, params$end))
+</code></pre>
+</div>
+<div id="pass-secure-parameters-at-knit-time" class="section level3">
+<h3>Pass secure parameters at knit-time</h3>
+<p>Parameters also provide a secure way to deal with passwords or other secret credentials. For example, if we need to connect to a database to pull data, we can create parameters in our YAML header with dummy values.</p>
+<pre><code>---
+title: “My Analysis&quot;
+output: html_document
+params:
+  username: emily
+  password: x
+---</code></pre>
+<p>These values can then be referenced within the code like this.</p>
+<pre><code>con &lt;- 
+  connect_to_database(
+    username = params$username,
+    password = params$password
+  )</code></pre>
+<p>When it comes time to knit the RMarkdown, there are multiple ways to pass the parameters in at knit-time.</p>
+<p>If we are knitting our RMarkdown from the RStudio IDE, we can use the parameters UI to prompt a pop-up box in which to enter parameters and replace the dummy values from the header. To do this, click the down arrow on the <code>Knit</code> button and chose <code>Knit with Parameters...</code>.</p>
+<p>Alternatively, this can also be done programmatically with the <code>rmarkdown::render</code> function. The <code>render</code> function can kick-off the process of knitting any RMarkdown when provided its file path, e.g. <code>rmarkdown::render(input = 'my-analysis.Rmd')</code>. <code>render</code> has a <code>params</code> argument which, as stated in the documentation, accepts “a list of named paraeters that override custom parameters specified in the YAML front-matter”. That is, we can write:</p>
+<pre><code>rmarkdown::render(input = &#39;my-analysis.Rmd&#39;, params = list(password = {{CODE TO RETRIEVE PASSWORD}}))</code></pre>
+<p>where <code>{{CODE TO RETRIEVE PASSWORD}}</code> is replaced with the relevant code. You could consider retrieving code from an environment variable, a <a href="https://cran.r-project.org/web/packages/keyring/index.html">keychain from the <code>keyring</code> package</a>, or code you may use to interface with other password managers. Credential management is a large topic unto itself and beyond the scope of this post.</p>
+</div>
+<div id="create-file-paths-with-here" class="section level3">
+<h3>Create file paths with <code>here</code></h3>
+<p>When our RMarkdown includes external files such as data, images, scripts, etc. it can be tempting to reference the resource by its full, global file path. This can deceptively seem like the most robust option since we are telling our computer <em>exactly</em> where to find the resource. So we may have file paths that look like this:</p>
+<pre><code>data &lt;- readRDS(‘C:\Users\me\Desktop\my-project\data\my-data.rds’)</code></pre>
+<p>However, this code is incredibly brittle. It effectively guarantees your code will not work on any machine but the one you are currently using. Even then, the path will break if you move the <code>my-project</code> directory.</p>
+<p>Slightly better is to use relative file paths based on the relationship to the working directory. By default, RMarkdown assumes the directory where it is stored is the working directory. So, if our RMarkdown lives in the <code>my-project</code> directory, the working directory will be <code>‘C:\Users\me\Desktop\my-project'</code> and we can write:</p>
+<pre><code>data &lt;- readRDS(&#39;data\my-data.rds’)</code></pre>
+<p>This version is resilient to moving around the <code>my-project</code> directory on your computer and will work on other computers so long as your RMarkdown and external file continue to have the same “steps” between them.</p>
+<p>However, this approach can still cause some unexpected behavior. Suppose we move our RMarkdown into the <code>analysis</code> subdirectory of <code>my-project</code> (as we will do in Step 4). Then, the effective working directory during the knitting process will be <code>‘C:\Users\me\Desktop\my-project\analysis'</code>. To reference the same data file, we would have to use a relative path that both gets us <em>out</em> of the <code>analysis</code> subdirectory (using <code>..</code> to move up to the parent directory) and then go back down into the <code>data</code> subdirectory like this:</p>
+<pre><code>data &lt;- readRDS(&#39;..\data\my-data.rds&#39;)</code></pre>
+<p>To make our RMarkdown more resilient to where the RMarkdown lives within the project, we can construct file paths dynamically using the <a href="https://here.r-lib.org/"><code>here</code> package</a>. Malcolm Barrett’s <a href="https://malco.io/2018/11/05/why-should-i-use-the-here-package-when-i-m-already-using-projects/">blog post</a> provides a more complete description of <code>here</code>’s benefits, but in short, <code>here</code> helps guarantee consistent behavior both within a project and across operating systems. It’s user-friendly syntax looks like this:</p>
+<pre><code>data &lt;- readRDS(here::here(‘data’, ‘my-data.rds’))</code></pre>
+</div>
+</div>
+<div id="step-2-rearranging-chunks" class="section level2">
+<h2>Step 2: Rearranging chunks</h2>
+<p>The goal of this step is to group similar parts of code together, specifically by moving infrastructure (e.g. package loads, data ingestion) and heavy-duty computation chunks to the top and letting narratives, tables, and plots sink to the bottom. This makes our document more navigable and easier to edit by locating like elements (e.g. computation vs narration) more centrally, and it allows us to notice repeated code or narration for consolidation.</p>
+<p>While the process of rearranging chunks is mostly manually, we can also pursue the aim in enhancing developer navigability with a few useful features of the RStudio IDE.</p>
+<div id="named-chunks" class="section level3">
+<h3>Named Chunks</h3>
+<p>Since we are grouping chunks together by intent in this step, We can use <a href="https://itsalocke.com/blog/namer-automatic-labelling-of-r-markdown-chunks/">named chunks</a> to communicate the purpose of each chunk. For example, most analyses probably include steps such as loading packages, loading data, cleaning data, etc. so we might want chunks named <code>pkg-load</code>, <code>data-load</code>, <code>data-clean</code>, etc. To do this, we would simply insert the name in the chunk header immediately after we specifiy the language engine, e.g. <code>{r NAME-HERE}</code>.</p>
+<p>Named chunks have numerous benefits, but the one most relevant for improving navigability is that RStudio uses chunk names to create a dynamic table of contents at the bottom of the pany in which your RMarkdown lives, as shown below. This makes it easier to quickly find the piece of code we want to inspect and to rapidly move between sections.</p>
+<div class="figure">
+<img src="/post/2020-02-01-rmarkdown-driven-development-the-technical-appendix.en_files/rmdd-toc.png" alt="Example of RStudio table of contents" />
+<p class="caption">Example of RStudio table of contents</p>
+</div>
+</div>
+<div id="indexed-comments" class="section level3">
+<h3>Indexed Comments</h3>
+<p>Similarly to named chunks, sometimes we might want to annotate specific sections of code within a single chunk. To do this, we can use normal R code comments and simply put four dashes (<code>----</code>) at the end of the comment. RStudio uses this special type of comment in two ways. First, it adds this to the same table of contents we discussed before (as shown in the image above). Second, this also enables the ability to collapse code subsections by clicking on the small triangle that appears to the right of the line number of the commented line.</p>
+</div>
+</div>
+<div id="step-3-reducing-duplication-with-functions" class="section level2">
+<h2>Step 3: Reducing duplication with functions</h2>
+<p>The goal of this step is to reduce duplicated code by taking note of similar, repeated code patterns and converting them to functions. Doing this improves code readability and helps us apply changes more consistently. How to write R functions is out of scope for this post, but you can learn more <a href="https://swcarpentry.github.io/r-novice-inflammation/02-func-R/">here</a>.</p>
+<div id="document-functions-with-roxygen2-template" class="section level3">
+<h3>Document functions with <code>roxygen2</code> template</h3>
+<p>One general benefit of R is the level of structure and consistency in the required documentation for R packages. Any time we bring up documentation with <code>?</code> or the <code>help()</code> function, we benefit from precise descriptions of the functions intent, input, and output.</p>
+<p><a href="https://roxygen2.r-lib.org/"><code>roxygen2</code></a> provides a light-weight syntax for authors to write this documentation, which then is rendered to official documentation files in the package-building process. However, <code>roxygen2</code> can be used even before we are building a package. This ensures we are writing documentation that is similar to what other R users are familiar with seeing and interpretting, and it also forces us to think more formally about the range of acceptable inputs and outputs for each function we write.</p>
+<p>Suppose we have defined a local scatterplot function that looks something like this:</p>
+<pre><code>viz_scatter_x &lt;- function(data, vbl) {
+  ggplot(
+    data = data, 
+    mapping = aes(x = x, y = {{vbl}}) +
+  geom_point()
+}
+</code></pre>
+<p>We can add <code>roxygen2</code> documentation using special <code>#'</code> comments above our function followed by <code>roxygen2</code> tags and values. To facilitate learning this system and rapidly generating documentation, we can use the RStudio IDE’s function documentation skeleton shortcut. With your cursor inside the function body, click <code>Code &gt; Insert Roxygen Skeleton</code> or use shortcut <code>Ctrl+Alt+Shift+R</code>. This adds into our code a basic documentation template.</p>
+<pre><code>#&#39; Title
+#&#39;
+#&#39; @param data 
+#&#39; @param vbl 
+#&#39;
+#&#39; @return
+#&#39; @export
+#&#39;
+#&#39; @examples
+viz_scatter_x &lt;- function(data, vbl) {
+  ggplot(
+    data = data, 
+    mapping = aes(x = x, y = {{vbl}}) +
+  geom_point()
+}
+</code></pre>
+<p>To complete this example, we can fill out the template like this:</p>
+<pre><code>#’ Scatterplot of variable versus x 
+#&#39;
+#&#39; @param data Dataset to plot. Must contain variable named x
+#&#39; @param vbl Name of variable to plot on y axis
+#&#39;
+#&#39; @return ggplot2 object
+#’ @import ggplot2
+#&#39; @export
+
+viz_scatter_x &lt;- function(data, vbl) {
+  ggplot(
+    data = data, 
+    mapping = aes(x = x, y = {{vbl}}) +
+  geom_point()
+}</code></pre>
+<p>An overview of <code>roxygen2</code> syntax can be found <a href="https://roxygen2.r-lib.org/articles/rd.html">here</a>.</p>
+</div>
+<div id="validate-data-inputs-with-assertr" class="section level3">
+<h3>Validate data inputs with <code>assertr</code></h3>
+<p>The function above is not, in fact, an ideal R function. While the y variable in our plot is specified by a function argument, the x variable is hard-coded into the function internally. As such, we are assuming that the dataset a user passes into the function contains a variable specifically named <code>x</code>. This is not a best practice since it adds some brittleness to the code, but when you first begin writing functions, you might occassionally end up with some. Additionally, if you are confident your dataset should stay consistent overtime (e.g. pulling from a stable database schema),you may find this to be a practical option since it avoid repeatedly specifying arguments that you don’t expect to take different values.</p>
+<p>If you are making any assumptions about the structure of your input data in your code, you might want to include a step to validate these assumptions and proactively flag to the user of the code if the data does not meet those expectations. R has multiple good options for data validation packages. If you are familiar with <code>dplyr</code> and are working with small datasets, the <a href="https://docs.ropensci.org/assertr/"><code>assertr</code> package</a> has a similar look and feel. If you want to validate large datasets on a remote system, the brand new <a href="https://rich-iannone.github.io/pointblank/"><code>pointblank</code> package</a> looks very promising, but I have not yet experimented with it personally.</p>
+</div>
+<div id="enforce-style-guide-with-lintr-or-styler" class="section level3">
+<h3>Enforce style guide with <code>lintr</code> or <code>styler</code></h3>
+<p>At this point, we’ve eliminated as much unneeded or duplicative code as possible. Next, we should consider the quality and style of the code that remains. The <a href="https://github.com/jimhester/lintr"><code>lintr</code></a> and the <a href="https://styler.r-lib.org/"><code>styler</code></a> packages both accomplish this in slightly different ways.</p>
+<p><code>lintr</code> works by analyzing your code and flagging issues for you to manually change. It can be run on one or more files and provides an itemized list of line numbers where a problem exists and a description of the issue. Example output is shown below:</p>
+<div class="figure">
+<img src="/post/2020-02-01-rmarkdown-driven-development-the-technical-appendix.en_files/rmdd-lintr.png" alt="Example of lintr output" />
+<p class="caption">Example of lintr output</p>
+</div>
+<p><code>styler</code> analyzes code similarly to <code>lintr</code>, but it automatically edits scripts to adhere to a style guide instead of providing suggestion.</p>
+<p>Both packages allow us to customize what checks we impose on our script. The main differences is a personal preference how ‘human-in-the-loop’ you want to be. I personally prefer the <code>lintr</code> package to maintain full control over my code. Additionally, getting immediate feedback on ways to improve my code style helps me learn to avoid those specific mistakes in the future.</p>
+</div>
+<div id="catch-typos-with-spelling" class="section level3">
+<h3>Catch typos with <code>spelling</code></h3>
+<p>Finally, recall that one key reason we are working in RMarkdown to begin with is its capacity for literate programming and enabling communication of our results. We have thus far been mostly focused on the needs of future <em>analysis tool users</em> not the <em>analysis results consumer</em>. They will never see the style of our code but likely care a lot about the human-readability of our prose.</p>
+<p>For this reason, as we finish polish our single-file RMarkdown, we should use the <a href="https://docs.ropensci.org/spelling/"><code>spelling</code> package</a> to check for typos in our analysis. Alternatively, if you are working in RStudio version 1.3 or later, you may also take advantage of the <a href="https://github.com/rstudio/rstudio/issues/2825">live spellcheck feature</a></p>
+</div>
+</div>
+<div id="step-3.5-enhance-single-file-output" class="section level2">
+<h2>Step 3.5: Enhance Single-File Output</h2>
+<p>Before we continue with the normal RmdDD ‘flow’, it’s worth taking a break to reflect upon what we’ve accomplished so far. At this point, we engineered a well-organized, well-document RMarkdown that is easier for developers to use.</p>
+<p>There are a few reasons why this might be the right stopping point. First, if you are automating a report that is nearly identical from iterartion to iteration, the value of single-file push-button execution may trump greater modularity or unneeded flexibility. Secondly, if you are in a resource constrained environment and lack a good system for sharing files with collaborators or conducting version control, a single-file documents is appealing for its portability.</p>
+<p>If either of these describe your use case, this sidenote is for you. Here, I comment on a few tips and tricks specific to getting the most out of single-file RMarkdowns. Otherwise, you may find it a bit tangential and prefer to jump to Step 4.</p>
+<div id="sharing-resources" class="section level3">
+<h3>Sharing Resources</h3>
+<p>If portability is the goal, you can carry this to the logical extreme and ship additional resources in the <em>output</em> of your RMarkdown. In a sense, we are creating a ‘desert island’ RMarkdown that is completely self-sustaining. I don’t recommend doing all of the things listed below simultaneously;this will drastically increase file size, and if you <em>need</em> to do all of these things, it’s probably a sign you shouldn’t be aiming for the single-file endpoint. That said, I mention them all here in case any one might be useful for your scenario.</p>
+<div id="allow-code-download-from-rmarkdown-output" class="section level4">
+<h4>Allow Code Download from RMarkdown Output</h4>
+<p>You can allow those with access to the HTML output of your RMarkdown download the source <code>.Rmd</code> by specifiying <code>code_download: true</code> in the YAML header like this:</p>
+<pre><code>output:
+  html_document:
+    code_download: true</code></pre>
+<p>Thanks to Allison Hill for publicizing this great trick:</p>
+{{% tweet "1108925218850893832" %}}
+</div>
+<div id="allow-data-previewdownload-with-dt" class="section level4">
+<h4>Allow Data Preview/Download with <code>DT</code></h4>
+<p>For relatively small datasets, you can both display you dataset and offer the option to download it using the <code>DT</code> package. <a href="https://rstudio.github.io/DT/003-tabletools-buttons.html">This example</a> demonstrates how you can add buttons to copy the data to clipboard or download it into multiple different formats.</p>
+</div>
+<div id="embed-an-arbitrary-file" class="section level4">
+<h4>Embed an arbitrary file</h4>
+<p>More broadly, you can embed a file, file(s), or folder from the HTML output of an RMarkdown with the functions <code>embed_file()</code>, <code>embed_files()</code>, and <code>embed_dir()</code> from the <a href="https://cran.r-project.org/web/packages/xfun/index.html"><code>xfun</code></a> package. The process of doing this is described in more detail in Yihui Xie’s <a href="https://yihui.org/en/2018/07/embed-file/">blog post</a> on these new functions.</p>
+</div>
+</div>
+<div id="version-comparison-with-diffr" class="section level3">
+<h3>Version Comparison with <code>diffr</code></h3>
+<p>As mentioned above, single file outputs may be useful in scenarios in which you have no formal version control system. In this case, you can conduct a rudimentary comparison of the differences between separately saved versions of your script using the <a href="https://github.com/muschellij2/diffr"><code>diffr</code> package</a>.</p>
+<p>This tools wraps the Javascript <code>codediff</code> library and provides an aesthetic comparison of differences between two text files, much like <code>diff</code> command line tools.</p>
+</div>
+</div>
+<div id="step-4-modularizing-rmd-chunks-into-a-project" class="section level2">
+<h2>Step 4: Modularizing Rmd chunks into a project</h2>
+<p>The goal of this step is to strip as much as reasonable<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a> outside of our RMarkdown by organizing it into other subdirectories in a project directory. This forces us to make more modular and reusable project assets and to decrease our RMarkdown’s knit-time by not making it do unneccessary work.</p>
+<div id="use-rstudio-r-project-.rproj" class="section level3">
+<h3>Use RStudio R Project (<code>.Rproj</code>)</h3>
+<p>A <a href="https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects">R Project</a> is a convenient structure that make a typically directory ‘smarter’. Projects have numerous benefits, but one particularly important one is that, when opened in RStudio, they immediately are treated as the working directory.</p>
+<p>In the RStudio interface, they also improve navigability by enabling a <a href="https://support.rstudio.com/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN">Git tab for version control</a> and easy access to a file explorer.</p>
+<p>You can make a new project in RStudio using <code>usethis::create_project()</code> or by clicking <code>File &gt; New Project...</code>.</p>
+</div>
+<div id="pick-a-consistent-opinionated-folder-structure" class="section level3">
+<h3>Pick a consistent &amp; opinionated folder structure</h3>
+<p>Alternatively, other packages such as <a href="http://projecttemplate.net/getting_started.html"><code>ProjectTemplate</code></a>, <a href="https://itsalocke.com/starters/"><code>starters</code></a>, or <a href="https://jdblischak.github.io/workflowr/articles/wflow-01-getting-started.html"><code>workflowr</code></a> will create your R project for you.</p>
+<p>Each ships with opinionated subdirectory structures to organize your work. This is similar in spirit to the structure I describe in the original RMarkdown Driven Development blog post but vary some in the exact semantics. Additionally, each provides a slightly different set of helper features to further tune and polish your project. I encourage you to explore all your options and pick what works best for you.</p>
+<p>The most critical step here is consistency; the more you keep the same structure between projects (and, ideally, across collaborators or any organization of which you are part), the easier it is for others to navigate your directory and find the project assets in which they are interested.</p>
+</div>
+</div>
+<div id="step-4.5-manage-dependencies-versions-and-interactions" class="section level2">
+<h2>Step 4.5: Manage dependencies, versions, and interactions</h2>
+<p>Once again, as in Section 3.5, we will briefly digress to take stock of where we are. Should we chose to take the ‘exit ramp’ of a well-formed R project, we will now find ourselves will a documented, modularized project with easy to find components. However, this structure has some additional benefits to reap and drawbacks to overcome <em>if we plan to stop at the project stage</em>, so this section focuses on overcoming them.</p>
+<p>One advantage of moving from a single file to a project structure is that it enables you to create helper artifacts and subdirectories that contain various types of package metadata in order to better maintain your project over time. Three particularly important examples of this are package dependency management, version control, and project interdependency management.</p>
+<div id="manage-package-dependencies-with-renv" class="section level3">
+<h3>Manage Package Dependencies with <code>renv</code></h3>
+<p>Dependency management refers to the process of tracking the specific versions of the packages you used in your project. This helps ensure reproducibility of your code even if those packages change in future updates. For example, sometimes functions may be removed, renamed, or reimplemented in functions; these ‘breaking changes’ may be the best option for that package but may break your downstream code.</p>
+<p>Package management is a challenging issue for many reasons. There are many critical decisions regarding when to capture the state of your dependencies, how to characterize the current version, and how to ensure you can recreate that environment in the future.</p>
+<p>Currently, one promising tool in the dependency management space is <a href="https://rstudio.github.io/renv/index.html"><code>renv</code></a>. It provides a portable and light-weight solution to package management problems by logging metadata about dependencies without actually saving all packages that are needed locally. By preserving this information, it can help restore this information, <code>renv</code> can also help recreate these specific environments by reinstalling specific versions of packages across a number of different repositories (CRAN, GitHub, etc.)</p>
+</div>
+<div id="conduct-version-control-with-rstudio-git-integration" class="section level3">
+<h3>Conduct Version Control with RStudio git Integration</h3>
+<p>This is also a good time to start thinking about version control with git. This is yet another huge topic and out of scope for this post. A good place to get started with using git with R is Jenny Bryan’s <a href="https://happygitwithr.com/">Happy Git and GitHub for the UseR</a>. More tactically, if you prefer to use Git through an IDE instead of the command line, RStudio has a <a href="https://support.rstudio.com/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN">built-in interface</a>. You can add version control to an existing project by choosing <code>Tools &gt; Project Options &gt; Version Control</code>.</p>
+<p>I personally prefer (and, to some extent, recommend) executing git commands in a terminal, but I still make use of RStudio’s version control pane to easily preview my current branch and project status (e.g. equivalents of always-on access to the <code>git status</code> commands.)</p>
+<p>As another alternative, <code>usethis</code> has a rapidly growing collection of functions to wrap conduct git and GitHub-related taks in declarative R syntax.</p>
+</div>
+<div id="ensure-project-syncing-with-drake" class="section level3">
+<h3>Ensure Project Syncing with <code>drake</code></h3>
+<p>However, moving from a single-file RMarkdown to a project is not purely upside; we’ve introduced to risks and brittleness of a different variety. Knitting a single-file RMarkdown causes all computation to rerun.<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a> This can be slow and tedious, but it helps guarantees that all of the parts of our analysis have run in order and all changes have complete ‘flowed through’. Projects, on the other hand, risk us forgetting steps (e.g. pulling fresh raw data but forgetting to refresh some intermediate data artifacts).</p>
+<p>The <a href="https://docs.ropensci.org/drake/"><code>drake</code></a> package helps counteract this by providing an R wrapper for the command line utility <a href="https://swcarpentry.github.io/make-novice/"><code>make</code></a>. These tools help us specify which documents in a project depend upon each other and allow us to selectively refresh elements that are ‘downstream’ from other critical elements.</p>
+</div>
+</div>
+<div id="step-5-migrating-a-project-to-a-package" class="section level2">
+<h2>Step 5: Migrating a project to a package</h2>
+<p>The goal of this step is to convert our R project to a package. This is fairly straightforward because an R package is, at the highest level, simple R files stored in the right places, and R has excellent developer tools to help us accomplish this. Additionally, there is a fairly clear one-to-one mapping between analysis project files and an R package structure, as is described in more detail in the main post.</p>
+<div id="configure-your-package-with-usethis" class="section level3">
+<h3>Configure your package with <code>usethis</code></h3>
+<p><a href="https://usethis.r-lib.org/index.html"><code>usethis</code></a> is a phenomenal tool for build R packages. I said above that write an R package is basically about saving files in the right place. Well, <code>usethis</code> makes this blazingly fast and simple by autogenerating many skeleton files, folder structures, and configuration infrastructure for your with simple declarative commands (e.g. <code>use_r_script()</code>, <code>use_vignette()</code>) which give you detailed and helpful messages as they go to work.</p>
+<p>Jenny Bryan is current rewriting the acclaimed <a href="http://r-pkgs.had.co.nz/">R Packages</a> book to highlight synergy with <code>usethis</code>. Check out this resource, even while the transformation is in progress, for a great overview of package components.</p>
+</div>
+<div id="autogenerate-documentation-with-devtools" class="section level3">
+<h3>Autogenerate documentation with <code>devtools</code></h3>
+<p><a href="https://devtools.r-lib.org/"><code>devtools</code></a> has many helpful functions for writing a package. Most critically for this discussion is the <code>devtools::document()</code> function which will translate the <code>roxygen2</code> comments you wrote way back in Step 3 and translate them into official R documentation files (<code>.Rd</code> files which will populate the <code>man/</code> folder).</p>
+</div>
+<div id="write-unit-tests-with-testthat" class="section level3">
+<h3>Write unit tests with <code>testthat</code></h3>
+<p><a href="https://testthat.r-lib.org/"><code>testthat</code></a> offers a high-level interface for writing unit tests for your R functions. This is critical for a well-managed R package, but quite honestly, writing functions for your unit tests are something you should start to think about as soon as you write functions!<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a></p>
+<p>In fact, as Davis Vaughn points out on Twitter, if you save your R functions in an <code>R/</code> folder instead of the generic <code>src/</code> folder at the project stage, you can actually go ahead and run <code>testthat</code> unit tests at that step.</p>
+{{% tweet "1124732877344784384" %}}
+</div>
+<div id="create-a-package-website-with-pkgdown" class="section level3">
+<h3>Create a package website with <code>pkgdown</code></h3>
+<p><a href="https://pkgdown.r-lib.org/"><code>pkgdown</code></a> goes one step above-and-beyond the requirements for an R package. It cleverly re-uses all of the metadata contained in your resulting R package to create an aesthetic and highly accessible documentation website for your pages. Want to see an ‘in the wild example’? All of the links above to <code>usethis</code>, <code>devtools</code>, <code>testthat</code>, and <code>pkgdown</code> point to outputs of this magical tool! Advanced features include custom search bars and Google Analytics tracking.</p>
+</div>
+<div id="coordinate-tasks-with-rstudios-build-pane" class="section level3">
+<h3>Coordinate tasks with RStudio’s Build Pane</h3>
+<p>RStudio’s <a href="https://support.rstudio.com/hc/en-us/articles/200486488-Developing-Packages-with-RStudio">package build pane</a> provides a great number of resources for helping with the package build process. This tab will help you execute and review the results of unit tests and R CMD check (don’t worry if you don’t know what that is yet!) and provides many helpful options for installing and building your package. The build pane accomplishes this by adding a UI layover over many of the functions in <code>devtools</code> and relates package development tools to further streamline your workflow.</p>
+</div>
+<div id="automate-builds-with-ghactions" class="section level3">
+<h3>Automate builds with <code>ghactions</code></h3>
+<p>As mentioned above, a lot of packages like <code>devtools</code> and <code>testthat</code> help you easily set up a lot of critical package infrastrucutre. However, you may find that there is a lot of manual overhead in repeatedly rerunning commands to build documentation, execute unit tests, or rebuild your package website. Additionally, if you are working with collaborators, you may wish to ensure these process-steps are executed on their code contributions before you incorporate them into your repository. If any of this sounds like a problem you are having, you might need a solution for <em>continuous integration</em>.</p>
+<p>The <a href="https://www.maxheld.de/ghactions/index.html"><code>ghactions</code></a> package is here to help! It provides an R interface to [GitHub Actions], a workflow automation tool available for GitHub-based repos.</p>
+<p>This is a relatively new package, and currently you will likely find more online support and documentation for other continuous integration tools like Travis CI and Appveyor (including <code>usethis</code> functions that will help you set up configuration files for these services, along with documentation in the <em>R packages</em> book). However, GitHub Actions appears to be growing in popularity due to it’s parity of features and superior integration with GitHub repositories. For more information, check out Jim Hester’s compelling rstudio::conf 2020 presentation on GitHub ACtions.</p>
+</div>
+</div>
+<div id="closing-thoughts" class="section level2">
+<h2>Closing Thoughts</h2>
+<p>This post recounts the best practices and tools that I am aware of for RmdDD as of January 2020. As I stated in the introduction, I’m under no illusion that this content will not eventually grow stale. If you know over other good tools that should be included or find any of the information mentioned is out of date, please contact me on <a href="https://twitter.com/EmilyRiederer">Twitter</a> or consider submitting a PR on GitHub to add or update content.</p>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>If you wish, you may see the slides on <a href="https://www.slideshare.net/EmilyRiederer/rmarkdown-driven-development-rstudioconf-2020">SlideShare</a>, and the video will be posted shortly<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>The choice between these depends on the problem you are solving and the needs of your future users. While that choice is out-of-scope for this post, advice on making that decision is contained in my rstudio::conf slides and will be the subject of a future post.<a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p>‘Reasonable’ in this case is highly dependent on what parts of the RMarkdown are static or dynamic.<a href="#fnref3">↩</a></p></li>
+<li id="fn4"><p>Unless one uses chunk caching. I personally find this to be a risky solution that is prone to human-error, so I leave it out of scope for this piece.<a href="#fnref4">↩</a></p></li>
+<li id="fn5"><p>Arguably, proponents of test-driven development would say you think about your tests <em>before</em> writing any functions.<a href="#fnref5">↩</a></p></li>
+</ol>
+</div>
