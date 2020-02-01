@@ -70,3 +70,22 @@ The repository contains many templates, scratchpads, and step-by-step instructio
   
   </div>
 </div>
+
+<p/>
+<p/>
+
+<div class = "proj-container">
+  <div class = "proj-logo">
+      <img src = "https://raw.githubusercontent.com/emilyriederer/wigo/master/man/figures/logo.png" />
+  </div>
+  <div class = "proj-meta">
+      <strong>wigo: A knitr engine to help understand what is going on in your RMarkdown environment</strong>
+      <br/>
+      <a href = "https://github.com/emilyriederer/wigo">GitHub repository</a>
+  </div>
+  <div class = "proj-desc">
+  
+<code>wigo</code> is light-weight package that provides an alternative <code>knitr</code> language engine. All RMarkdown code chunks are executed with the standard R engine, but chunk output is replaced by a changelog showing a diff of the environment between chunks. This can help uncover opportunities to consolidate or reorganize an RMarkdown.
+  
+  </div>
+</div>
