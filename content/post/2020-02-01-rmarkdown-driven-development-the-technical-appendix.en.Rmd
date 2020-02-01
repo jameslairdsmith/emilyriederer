@@ -135,7 +135,7 @@ The following R packages, RMarkdown features, and RStudio IDE utilities are ment
 - Named chunks
 - Indexed comments 
 - Function documentation skeleton shortcut
-- Live spellcheck
+- Live spell-check
 - R Project (`.Rproj`)
 - Version control
 - Package build pane
@@ -160,7 +160,7 @@ data2_lastyr <-
   filter(between(date, ‘2018-01-01’, ‘2018-03-31’))
 ```
 
-Instead, [RMarkdown parameters](https://rmarkdown.rstudio.com/lesson-6.html) allow us highlight key variables in the YAML header, and turn the entire RMarkdown document into a 'megafunction'. 
+Instead, [RMarkdown parameters](https://rmarkdown.rstudio.com/lesson-6.html) allow us highlight key variables in the YAML header, and turn the entire RMarkdown document into a 'mega-function'. 
 
 ```
 ---
@@ -209,7 +209,7 @@ When it comes time to knit the RMarkdown, there are multiple ways to pass the pa
 
 If we are knitting our RMarkdown from the RStudio IDE, we can use the parameters UI to prompt a pop-up box in which to enter parameters and replace the dummy values from the header. To do this, click the down arrow on the `Knit` button and chose `Knit with Parameters...`.
 
-Alternatively, this can also be done programmatically with the `rmarkdown::render` function. The `render` function can kick-off the process of knitting any RMarkdown when provided its file path, e.g. `rmarkdown::render(input = 'my-analysis.Rmd')`. `render` has a `params` argument which, as stated in the documentation, accepts "a list of named paraeters that override custom parameters specified in the YAML front-matter". That is, we can write:
+Alternatively, this can also be done programmatically with the `rmarkdown::render` function. The `render` function can kick-off the process of knitting any RMarkdown when provided its file path, e.g. `rmarkdown::render(input = 'my-analysis.Rmd')`. `render` has a `params` argument which, as stated in the documentation, accepts "a list of named parameters that override custom parameters specified in the YAML front-matter". That is, we can write:
 
 ```
 rmarkdown::render(input = 'my-analysis.Rmd', params = list(password = {{CODE TO RETRIEVE PASSWORD}}))
@@ -236,7 +236,7 @@ data <- readRDS('data\my-data.rds’)
 
 This version is resilient to moving around the `my-project` directory on your computer and will work on other computers so long as your RMarkdown and external file continue to have the same "steps" between them. 
 
-However, this approach can still cause some unexpected behavior. Suppose we move our RMarkdown into the `analysis` subdirectory of `my-project` (as we will do in Step 4). Then, the effective working directory during the knitting process will be `‘C:\Users\me\Desktop\my-project\analysis'`. To reference the same data file, we would have to use a relative path that both gets us *out* of the `analysis` subdirectory (using `..` to move up to the parent directory) and then go back down into the `data` subdirectory like this:
+However, this approach can still cause some unexpected behavior. Suppose we move our RMarkdown into the `analysis` sub-directory of `my-project` (as we will do in Step 4). Then, the effective working directory during the knitting process will be `‘C:\Users\me\Desktop\my-project\analysis'`. To reference the same data file, we would have to use a relative path that both gets us *out* of the `analysis` sub-directory (using `..` to move up to the parent directory) and then go back down into the `data` sub-directory like this:
 
 ```
 data <- readRDS('..\data\my-data.rds')
@@ -256,9 +256,9 @@ While the process of rearranging chunks is mostly manually, we can also pursue t
 
 ### Named Chunks
 
-Since we are grouping chunks together by intent in this step, We can use [named chunks](https://itsalocke.com/blog/namer-automatic-labelling-of-r-markdown-chunks/) to communicate the purpose of each chunk. For example, most analyses probably include steps such as loading packages, loading data, cleaning data, etc. so we might want chunks named `pkg-load`, `data-load`, `data-clean`, etc. To do this, we would simply insert the name in the chunk header immediately after we specifiy the language engine, e.g. `{r NAME-HERE}`.
+Since we are grouping chunks together by intent in this step, We can use [named chunks](https://itsalocke.com/blog/namer-automatic-labelling-of-r-markdown-chunks/) to communicate the purpose of each chunk. For example, most analyses probably include steps such as loading packages, loading data, cleaning data, etc. so we might want chunks named `pkg-load`, `data-load`, `data-clean`, etc. To do this, we would simply insert the name in the chunk header immediately after we specify the language engine, e.g. `{r NAME-HERE}`.
 
-Named chunks have numerous benefits, but the one most relevant for improving navigability is that RStudio uses chunk names to create a dynamic table of contents at the bottom of the pany in which your RMarkdown lives, as shown below. This makes it easier to quickly find the piece of code we want to inspect and to rapidly move between sections. 
+Named chunks have numerous benefits, but the one most relevant for improving navigability is that RStudio uses chunk names to create a dynamic table of contents at the bottom of the pane in which your RMarkdown lives, as shown below. This makes it easier to quickly find the piece of code we want to inspect and to rapidly move between sections. 
 
 ![Example of RStudio table of contents](/post/2020-02-01-rmarkdown-driven-development-the-technical-appendix.en_files/rmdd-toc.png)
 
@@ -274,7 +274,7 @@ The goal of this step is to reduce duplicated code by taking note of similar, re
 
 One general benefit of R is the level of structure and consistency in the required documentation for R packages. Any time we bring up documentation with `?` or the `help()` function, we benefit from precise descriptions of the functions intent, input, and output. 
 
-[`roxygen2`](https://roxygen2.r-lib.org/) provides a light-weight syntax for authors to write this documentation, which then is rendered to official documentation files in the package-building process. However, `roxygen2` can be used even before we are building a package. This ensures we are writing documentation that is similar to what other R users are familiar with seeing and interpretting, and it also forces us to think more formally about the range of acceptable inputs and outputs for each function we write. 
+[`roxygen2`](https://roxygen2.r-lib.org/) provides a light-weight syntax for authors to write this documentation, which then is rendered to official documentation files in the package-building process. However, `roxygen2` can be used even before we are building a package. This ensures we are writing documentation that is similar to what other R users are familiar with seeing and interpreting, and it also forces us to think more formally about the range of acceptable inputs and outputs for each function we write. 
 
 Suppose we have defined a local scatterplot function that looks something like this:
 
@@ -333,7 +333,7 @@ An overview of `roxygen2` syntax can be found [here](https://roxygen2.r-lib.org/
 
 ### Validate data inputs with `assertr`
 
-The function above is not, in fact, an ideal R function. While the y variable in our plot is specified by a function argument, the x variable is hard-coded into the function internally. As such, we are assuming that the dataset a user passes into the function contains a variable specifically named `x`. This is not a best practice since it adds some brittleness to the code, but when you first begin writing functions, you might occassionally end up with some. Additionally, if you are confident your dataset should stay consistent overtime (e.g. pulling from a stable database schema),you may find this to be a practical option since it avoid repeatedly specifying arguments that you don't expect to take different values. 
+The function above is not, in fact, an ideal R function. While the y variable in our plot is specified by a function argument, the x variable is hard-coded into the function internally. As such, we are assuming that the dataset a user passes into the function contains a variable specifically named `x`. This is not a best practice since it adds some brittleness to the code, but when you first begin writing functions, you might occasionally end up with some. Additionally, if you are confident your dataset should stay consistent overtime (e.g. pulling from a stable database schema),you may find this to be a practical option since it avoid repeatedly specifying arguments that you don't expect to take different values. 
 
 If you are making any assumptions about the structure of your input data in your code, you might want to include a step to validate these assumptions and proactively flag to the user of the code if the data does not meet those expectations. R has multiple good options for data validation packages. If you are familiar with `dplyr` and are working with small datasets, the [`assertr` package](https://docs.ropensci.org/assertr/) has a similar look and feel. If you want to validate large datasets on a remote system, the brand new [`pointblank` package](https://rich-iannone.github.io/pointblank/) looks very promising, but I have not yet experimented with it personally.
 
@@ -359,9 +359,9 @@ For this reason, as we finish polish our single-file RMarkdown, we should use th
 
 Before we continue with the normal RmdDD 'flow', it's worth taking a break to reflect upon what we've accomplished so far. At this point, we engineered a well-organized, well-document RMarkdown that is easier for developers to use. 
 
-There are a few reasons why this might be the right stopping point. First, if you are automating a report that is nearly identical from iterartion to iteration, the value of single-file push-button execution may trump greater modularity or unneeded flexibility. Secondly, if you are in a resource constrained environment and lack a good system for sharing files with collaborators or conducting version control, a single-file documents is appealing for its portability.
+There are a few reasons why this might be the right stopping point. First, if you are automating a report that is nearly identical from iteration to iteration, the value of single-file push-button execution may trump greater modularity or unneeded flexibility. Secondly, if you are in a resource constrained environment and lack a good system for sharing files with collaborators or conducting version control, a single-file documents is appealing for its portability.
 
-If either of these describe your use case, this sidenote is for you. Here, I comment on a few tips and tricks specific to getting the most out of single-file RMarkdowns. Otherwise, you may find it a bit tangential and prefer to jump to Step 4.
+If either of these describe your use case, this side-note is for you. Here, I comment on a few tips and tricks specific to getting the most out of single-file RMarkdowns. Otherwise, you may find it a bit tangential and prefer to jump to Step 4.
 
 ### Sharing Resources
 
@@ -369,7 +369,7 @@ If portability is the goal, you can carry this to the logical extreme and ship a
 
 #### Allow Code Download from RMarkdown Output
 
-You can allow those with access to the HTML output of your RMarkdown download the source `.Rmd` by specifiying `code_download: true` in the YAML header like this:
+You can allow those with access to the HTML output of your RMarkdown download the source `.Rmd` by specifying `code_download: true` in the YAML header like this:
 
 ```
 output:
@@ -395,11 +395,11 @@ More broadly, you can embed a file, file(s), or folder from the HTML output of a
 
 As mentioned above, single file outputs may be useful in scenarios in which you have no formal version control system. In this case, you can conduct a rudimentary comparison of the differences between separately saved versions of your script using the [`diffr` package](https://github.com/muschellij2/diffr). 
 
-This tools wraps the Javascript `codediff` library and provides an aesthetic comparison of differences between two text files, much like `diff` command line tools. 
+This tool wraps the JavaScript `codediff` library and provides an aesthetic comparison of differences between two text files, much like `diff` command line tools. 
 
 ## Step 4: Modularizing Rmd chunks into a project
 
-The goal of this step is to strip as much as reasonable^['Reasonable' in this case is highly dependent on what parts of the RMarkdown are static or dynamic.] outside of our RMarkdown by organizing it into other subdirectories in a project directory. This forces us to make more modular and reusable project assets and to decrease our RMarkdown's knit-time by not making it do unneccessary work. 
+The goal of this step is to strip as much as reasonable^['Reasonable' in this case is highly dependent on what parts of the RMarkdown are static or dynamic.] outside of our RMarkdown by organizing it into other sub-directories in a project directory. This forces us to make more modular and reusable project assets and to decrease our RMarkdown's knit-time by not making it do unnecessary work. 
 
 ### Use RStudio R Project (`.Rproj`)
 
@@ -413,7 +413,7 @@ You can make a new project in RStudio using `usethis::create_project()` or by cl
 
 Alternatively, other packages such as [`ProjectTemplate`](http://projecttemplate.net/getting_started.html),  [`starters`](https://itsalocke.com/starters/), or [`workflowr`](https://jdblischak.github.io/workflowr/articles/wflow-01-getting-started.html) will create your R project for you. 
 
-Each ships with opinionated subdirectory structures to organize your work. This is similar in spirit to the structure I describe in the original RMarkdown Driven Development blog post but vary some in the exact semantics. Additionally, each provides a slightly different set of helper features to further tune and polish your project. I encourage you to explore all your options and pick what works best for you. 
+Each ships with opinionated sub-directory structures to organize your work. These are similar in spirit to the structure I describe in the original RMarkdown Driven Development blog post but vary some in the exact semantics. Additionally, each provides a slightly different set of helper features to further tune and polish your project. I encourage you to explore all your options and pick what works best for you. 
 
 The most critical step here is consistency; the more you keep the same structure between projects (and, ideally, across collaborators or any organization of which you are part), the easier it is for others to navigate your directory and find the project assets in which they are interested. 
 
@@ -421,15 +421,15 @@ The most critical step here is consistency; the more you keep the same structure
 
 Once again, as in Section 3.5, we will briefly digress to take stock of where we are. Should we chose to take the 'exit ramp' of a well-formed R project, we will now find ourselves will a documented, modularized project with easy to find components. However, this structure has some additional benefits to reap and drawbacks to overcome *if we plan to stop at the project stage*, so this section focuses on overcoming them.
 
-One advantage of moving from a single file to a project structure is that it enables you to create helper artifacts and subdirectories that contain various types of package metadata in order to better maintain your project over time. Three particularly important examples of this are package dependency management, version control, and project interdependency management. 
+One advantage of moving from a single file to a project structure is that it enables you to create helper artifacts and sub-directories that contain various types of package metadata in order to better maintain your project over time. Three particularly important examples of this are package dependency management, version control, and project interdependency management. 
 
 ### Manage Package Dependencies with `renv`
 
-Dependency management refers to the process of tracking the specific versions of the packages you used in your project. This helps ensure reproducibility of your code even if those packages change in future updates. For example, sometimes functions may be removed, renamed, or reimplemented in functions; these 'breaking changes' may be the best option for that package but may break your downstream code. 
+Dependency management refers to the process of tracking the specific versions of the packages you used in your project. This helps ensure reproducibility of your code even if those packages change in future updates. For example, sometimes functions may be removed, renamed, or re-implemented in functions; these 'breaking changes' may be the best option for that package but may break your downstream code. 
 
 Package management is a challenging issue for many reasons. There are many critical decisions regarding when to capture the state of your dependencies, how to characterize the current version, and how to ensure you can recreate that environment in the future.
 
-Currently, one promising tool in the dependency management space is [`renv`](https://rstudio.github.io/renv/index.html). It provides a portable and light-weight solution to package management problems by logging metadata about dependencies without actually saving all packages that are needed locally. By preserving this information, it can help restore this information, `renv` can also help recreate these specific environments by reinstalling specific versions of packages across a number of different repositories (CRAN, GitHub, etc.)
+Currently, one promising tool in the dependency management space is [`renv`](https://rstudio.github.io/renv/index.html). It provides a portable and light-weight solution to package management problems by logging metadata about dependencies without actually saving all packages that are needed locally. By preserving this information, it can help restore this information, `renv` can also help recreate these specific environments by re-installing specific versions of packages across a number of different repositories (CRAN, GitHub, etc.)
 
 ### Conduct Version Control with RStudio git Integration
 
@@ -437,7 +437,7 @@ This is also a good time to start thinking about version control with git. This 
 
 I personally prefer (and, to some extent, recommend) executing git commands in a terminal, but I still make use of RStudio's version control pane to easily preview my current branch and project status (e.g. equivalents of always-on access to the `git status` commands.)
 
-As another alternative, `usethis` has a rapidly growing collection of functions to wrap conduct git and GitHub-related taks in declarative R syntax.
+As another alternative, `usethis` has a rapidly growing collection of functions to wrap conduct git and GitHub-related tasks in declarative R syntax.
 
 ### Ensure Project Syncing with `drake`
 
@@ -451,7 +451,7 @@ The goal of this step is to convert our R project to a package. This is fairly s
 
 ### Configure your package with `usethis`
 
-[`usethis`](https://usethis.r-lib.org/index.html) is a phenomenal tool for build R packages. I said above that write an R package is basically about saving files in the right place. Well, `usethis` makes this blazingly fast and simple by autogenerating many skeleton files, folder structures, and configuration infrastructure for your with simple declarative commands (e.g. `use_r_script()`, `use_vignette()`) which give you detailed and helpful messages as they go to work. 
+[`usethis`](https://usethis.r-lib.org/index.html) is a phenomenal tool for build R packages. I said above that write an R package is basically about saving files in the right place. Well, `usethis` makes this blazingly fast and simple by auto-generating many skeleton files, folder structures, and configuration infrastructure for your with simple declarative commands (e.g. `use_r_script()`, `use_vignette()`) which give you detailed and helpful messages as they go to work. 
 
 Jenny Bryan is current rewriting the acclaimed [R Packages](http://r-pkgs.had.co.nz/) book to highlight synergy with `usethis`. Check out this resource, even while the transformation is in progress, for a great overview of package components.
 
@@ -479,11 +479,11 @@ RStudio's [package build pane](https://support.rstudio.com/hc/en-us/articles/200
 
 ### Automate builds with `ghactions`
 
-As mentioned above, a lot of packages like `devtools` and `testthat` help you easily set up a lot of critical package infrastrucutre. However, you may find that there is a lot of manual overhead in repeatedly rerunning commands to build documentation, execute unit tests, or rebuild your package website. Additionally, if you are working with collaborators, you may wish to ensure these process-steps are executed on their code contributions before you incorporate them into your repository. If any of this sounds like a problem you are having, you might need a solution for *continuous integration*.
+As mentioned above, a lot of packages like `devtools` and `testthat` help you easily set up a lot of critical package infrastructure. However, you may find that there is a lot of manual overhead in repeatedly rerunning commands to build documentation, execute unit tests, or rebuild your package website. Additionally, if you are working with collaborators, you may wish to ensure these process-steps are executed on their code contributions before you incorporate them into your repository. If any of this sounds like a problem you are having, you might need a solution for *continuous integration*.
 
 The [`ghactions`](https://www.maxheld.de/ghactions/index.html) package is here to help! It provides an R interface to [GitHub Actions], a workflow automation tool available for GitHub-based repos. 
 
-This is a relatively new package, and currently you will likely find more online support and documentation for other continuous integration tools like Travis CI and Appveyor (including `usethis` functions that will help you set up configuration files for these services, along with documentation in the *R packages* book). However, GitHub Actions appears to be growing in popularity due to it's parity of features and superior integration with GitHub repositories. For more information, check out Jim Hester's compelling rstudio::conf 2020 presentation on GitHub ACtions.
+This is a relatively new package, and currently you will likely find more online support and documentation for other continuous integration tools like Travis CI and Appveyor (including `usethis` functions that will help you set up configuration files for these services, along with documentation in the *R packages* book). However, GitHub Actions appears to be growing in popularity due to it's parity of features and superior integration with GitHub repositories. For more information, check out Jim Hester's compelling rstudio::conf 2020 presentation on GitHub Actions.
 
 ## Closing Thoughts
 
