@@ -3,24 +3,78 @@ title: 'RMarkdown Driven Development: the Technical Appendix'
 author: Emily Riederer
 date: '2020-02-01'
 slug: rmddd-tech-appendix
-categories: []
 tags:
   - pkgdev
   - rstats
   - workflow
   - rmarkdown
-subtitle: ''
 ---
 
 
 
-<div id="rmarkdown-driven-development-the-technical-appendix" class="section level1">
-<h1>RMarkdown Driven Development: The Technical Appendix</h1>
 <div id="motivation" class="section level2">
 <h2>Motivation</h2>
 <p>My initial post on <a href="https://emilyriederer.netlify.com/post/rmarkdown-driven-development/">RMarkdown Driven Development</a> focuses on major <em>concepts</em> in the process of evolving a one-time, single-file analysis into a sustainable analytical tool. In the spirit of Etsy’s <a href="https://codeascraft.com/2018/10/10/etsys-experiment-with-immutable-documentation/">immutable documentation</a>, I intentionally minimized references to specific tools or packages. After all, software is transient; principles are evergreen.</p>
 <p>However, RMarkdown Driven Development is more than just a <em>conceptual</em> framework. There are three main components: the main conceptual workflow (the why-to), the technical implementation (the how-to), and the comparison of merits between different destination states (the what-now). I touched on all three of these briefly in my rstudio::conf 2020 presentation<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>, but plan to explore each more deeply in their own post. This post focuses on the second: tools for technical implementation.</p>
 <p>To implement RMarkdown Driven Development (RmdDD), one should take full advantage of the current state-of-the-art in R developer tools and the RStudio IDE. This article surveys helpful some of these helpful packages and tools. As the title implies, this piece is a appendix and not a complete narrative. It is neither a stand-along replacement for the original post, nor does it intend completely explain each referenced package and tool it mentions. This companion piece simply focuses on awareness raising for the plethora of tools that can make your job as a (file / project / package) engineer easier.</p>
+<p>As this is a very lenthy post, please use the visual guide and the table of contents below to jump around as you please:</p>
+<div class="figure">
+<img src="/post/2020-02-01-rmarkdown-driven-development-the-technical-appendix.en_files/rmdd-tech-appendix.PNG" alt="Diagram of packages and tools on RmdDD timeline" />
+<p class="caption">Diagram of packages and tools on RmdDD timeline</p>
+</div>
+<ul>
+<li><a href="#review-of-rmarkdown-driven-development">Review of RMarkdown Driven Development</a></li>
+<li><a href="#tools-covered">Tools Covered</a></li>
+<li><a href="#step-1:-removing-troublesome-components">Step 1: Removing troublesome components</a>
+<ul>
+<li><a href="#convert-hard-coded-variables-to-parameters">Convert hard-coded variables to parameters</a></li>
+<li><a href="#pass-secure-parameters-at-knit-time">Pass secure parameters at knit-time</a></li>
+<li><a href="#create-file-paths-with-%60here%60">Create file paths with <code>here</code></a></li>
+</ul></li>
+<li><a href="#step-2:-rearranging-chunks">Step 2: Rearranging chunks</a>
+<ul>
+<li><a href="#named-chunks">Named Chunks</a></li>
+<li><a href="#indexed-comments">Indexed Comments</a></li>
+</ul></li>
+<li><a href="#step-3:-reducing-duplication-with-functions">Step 3: Reducing duplication with functions</a>
+<ul>
+<li><a href="#document-functions-with-%60roxygen2%60-template">Document functions with <code>roxygen2</code> template</a></li>
+<li><a href="#validate-data-inputs-with-%60assertr%60">Validate data inputs with <code>assertr</code></a></li>
+<li><a href="#enforce-style-guide-with-%60lintr%60-or-%60styler%60">Enforce style guide with <code>lintr</code> or <code>styler</code></a></li>
+<li><a href="#catch-typos-with-%60spelling%60">Catch typos with <code>spelling</code></a></li>
+</ul></li>
+<li><a href="#step-3.5:-enhance-single-file-output">Step 3.5: Enhance Single-File Output</a>
+<ul>
+<li><a href="#sharing-resources">Sharing Resources</a>
+<ul>
+<li><a href="#allow-code-download-from-rmarkdown-output">Allow Code Download from RMarkdown Output</a></li>
+<li><a href="#allow-data-preview/download-with-%60dt%60">Allow Data Preview/Download with <code>DT</code></a></li>
+<li><a href="#embed-an-arbitrary-file">Embed an arbitrary file</a></li>
+</ul></li>
+<li><a href="#version-comparison-with-%60diffr%60">Version Comparison with <code>diffr</code></a></li>
+</ul></li>
+<li><a href="#step-4:-modularizing-rmd-chunks-into-a-project">Step 4: Modularizing Rmd chunks into a project</a>
+<ul>
+<li><a href="#use-rstudio-r-project-(%60.rproj%60)">Use RStudio R Project (<code>.Rproj</code>)</a></li>
+<li><a href="#pick-a-consistent-&amp;-opinionated-folder-structure">Pick a consistent &amp; opinionated folder structure</a></li>
+</ul></li>
+<li><a href="#step-4.5:-manage-dependencies,-versions,-and-interactions">Step 4.5: Manage dependencies, versions, and interactions</a>
+<ul>
+<li><a href="#manage-package-dependencies-with-%60renv%60">Manage Package Dependencies with <code>renv</code></a></li>
+<li><a href="#conduct-version-control-with-rstudio-git-integration">Conduct Version Control with RStudio git Integration</a></li>
+<li><a href="#ensure-project-syncing-with-%60drake%60">Ensure Project Syncing with <code>drake</code></a></li>
+</ul></li>
+<li><a href="#step-5:-migrating-a-project-to-a-package">Step 5: Migrating a project to a package</a>
+<ul>
+<li><a href="#configure-your-package-with-%60usethis%60">Configure your package with <code>usethis</code></a></li>
+<li><a href="#autogenerate-documentation-with-%60devtools%60">Autogenerate documentation with <code>devtools</code></a></li>
+<li><a href="#write-unit-tests-with-%60testthat%60">Write unit tests with <code>testthat</code></a></li>
+<li><a href="#create-a-package-website-with-%60pkgdown%60">Create a package website with <code>pkgdown</code></a></li>
+<li><a href="#coordinate-tasks-with-rstudio&#39;s-build-pane">Coordinate tasks with RStudio’s Build Pane</a></li>
+<li><a href="#automate-builds-with-%60ghactions%60">Automate builds with <code>ghactions</code></a></li>
+</ul></li>
+<li><a href="#closing-thoughts">Closing Thoughts</a></li>
+</ul>
 </div>
 <div id="review-of-rmarkdown-driven-development" class="section level2">
 <h2>Review of RMarkdown Driven Development</h2>
@@ -35,8 +89,8 @@ subtitle: ''
 <p>Steps 1-3 result in a well-engineered single-file RMarkdown, Step 4 in an R Project, and finally Step 5 in a Package. Critically, RmdDD introduces good software engineering practices as early as possible in each step of this workflow. This means that you can stop at steps 3, 4, or 5, and even up in a sustainable analytical tool in the form of either a single file <code>.Rmd</code>, an R project, or a package.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></p>
 <p>Many existing R packages and IDE features can aid in each of these steps. The rest of this post will review these tools step-by-step.</p>
 </div>
-<div id="tool-name-dropping" class="section level2">
-<h2>Tool Name-Dropping</h2>
+<div id="tools-covered" class="section level2">
+<h2>Tools Covered</h2>
 <p>The following R packages, RMarkdown features, and RStudio IDE utilities are mentioned in this post. If some are of particular interest to you, you can search this post to jump to where they are mentioned. Do not be overwhelmed by the sheer number of tools and functionality mentioned. Very few are actually necessary to conduct RmdDD or to build a good analysis tool. Simply pick whichever tools you like to add to your toolkit.</p>
 <p><strong>R Packages</strong></p>
 <ul>
@@ -81,11 +135,6 @@ subtitle: ''
 <li>Version control</li>
 <li>Package build pane</li>
 </ul>
-<p>The follow diagram depicts where each referenced tool fits in to the workflow:</p>
-<div class="figure">
-<img src="/post/2020-02-01-rmarkdown-driven-development-the-technical-appendix.en_files/rmdd-tech-appendix.PNG" alt="Diagram of packages and tools on RmdDD timeline" />
-<p class="caption">Diagram of packages and tools on RmdDD timeline</p>
-</div>
 </div>
 <div id="step-1-removing-troublesome-components" class="section level2">
 <h2>Step 1: Removing troublesome components</h2>
@@ -347,7 +396,6 @@ viz_scatter_x &lt;- function(data, vbl) {
 <div id="closing-thoughts" class="section level2">
 <h2>Closing Thoughts</h2>
 <p>This post recounts the best practices and tools that I am aware of for RmdDD as of January 2020. As I stated in the introduction, I’m under no illusion that this content will not eventually grow stale. If you know over other good tools that should be included or find any of the information mentioned is out of date, please contact me on <a href="https://twitter.com/EmilyRiederer">Twitter</a> or consider submitting a PR on GitHub to add or update content.</p>
-</div>
 </div>
 <div class="footnotes">
 <hr />
