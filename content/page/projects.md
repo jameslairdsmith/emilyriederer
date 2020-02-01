@@ -76,7 +76,7 @@ The repository contains many templates, scratchpads, and step-by-step instructio
 
 <div class = "proj-container">
   <div class = "proj-logo">
-      <img src = "https://raw.githubusercontent.com/emilyriederer/wigo/master/man/figures/logo.png" />
+      <img width = "120" src = "https://raw.githubusercontent.com/emilyriederer/wigo/master/man/figures/logo.png" />
   </div>
   <div class = "proj-meta">
       <strong>wigo: A knitr engine to help understand what is going on in your RMarkdown environment</strong>
