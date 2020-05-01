@@ -36,7 +36,7 @@ First, let's consider a high-level classification of RMarkdown chunks by differe
 
 - **Infrastructure**: These chunks set up the environment in which the RMarkdown is rendered. This includes code that helps add functions to your enviornment (e.g. `library()`, `source()`), load data (e.g. functions from `readr` or `data.table::fread()` or functions calling APIs or databases), or define analysis parameters (e.g. hardcoded values that are somehow used to change behavior later in the script)
 - **Wrangling**: These chunks contain code to transform the data that you've loaded into information desired for analysis/discussion (e.g. tidying, aggregation, model fitting)
-- **Communication**: These chunks help to produce meaninful output for a report such as data visualizations and summary tables
+- **Communication**: These chunks help to produce meaningful output for a report such as data visualizations and summary tables
 
 ## (1) Remove Troublesome or Unsustainable Elements {#remove}
 
